@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>HWPX 타이틀 블록 — Graphic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --mm: 4px;
+    --accent:       #2453a8;
+    --accent-2:     #f4c95d;
+    --accent-soft:  #dde6f4;
+    --accent-line:  #1a3d80;
+    --ink:          #1a1a1a;
+    --paper:        #ffffff;
+    --muted:        #9a9a9a;
+
+    --ui-bg:    #f3efe6;
+    --ui-line:  #2a2a2a;
+    --ui-muted: #6b6b66;
+  }
+
+  body[data-concept="navy"]   { --accent:#2453a8; --accent-2:#f4c95d; --accent-soft:#dde6f4; --accent-line:#1a3d80; }
+  body[data-concept="coral"]  { --accent:#d65a4a; --accent-2:#3aa8b8; --accent-soft:#fae3d6; --accent-line:#9d3e32; }
+  body[data-concept="forest"] { --accent:#2f7a4a; --accent-2:#f4c95d; --accent-soft:#d3e6d6; --accent-line:#1f5733; }
+  body[data-concept="grape"]  { --accent:#6a4ca8; --accent-2:#f4c95d; --accent-soft:#e2d8f3; --accent-line:#4a3580; }
+  body[data-concept="terracotta"] { --accent:#9a4a2d; --accent-2:#3a8a8a; --accent-soft:#efd7c8; --accent-line:#6f321b; }
+  body[data-concept="ink"]    { --accent:#1a1a1a; --accent-2:#c98a2a; --accent-soft:#ececec; --accent-line:#1a1a1a; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-line);
+    padding: 36px 44px 80px;
+  }
+
+  .topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-bottom: 2px dashed var(--ui-line); padding-bottom: 18px; margin-bottom: 28px; }
+  .topbar h1 { font-family: 'Nanum Pen Script', cursive; font-size: 44px; line-height: 1; margin: 0 0 4px; font-weight: 400; }
+  .topbar .sub { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); }
+  .topbar .sub b { color: var(--ui-line); }
+  .toolbar { display:flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .concept-picker { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .concept-picker .lbl { font-family: 'Gaegu', cursive; font-size: 16px; }
+  .swatch { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px 6px 8px; border: 1.5px solid var(--ui-line); background: #fff; border-radius: 999px; font-family: 'Gaegu', cursive; font-size: 14px; cursor: pointer; transition: transform .08s ease; }
+  .swatch:hover { transform: translateY(-1px); }
+  .swatch.active { background: var(--ui-line); color: #fff; }
+  .swatch .dot { width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.25); position:relative; overflow:hidden; }
+  .swatch .dot::after { content:""; position:absolute; inset:0 0 0 50%; }
+  .swatch[data-c="navy"]    .dot { background:#2453a8; } .swatch[data-c="navy"]    .dot::after { background:#f4c95d; }
+  .swatch[data-c="coral"]   .dot { background:#d65a4a; } .swatch[data-c="coral"]   .dot::after { background:#3aa8b8; }
+  .swatch[data-c="forest"]  .dot { background:#2f7a4a; } .swatch[data-c="forest"]  .dot::after { background:#f4c95d; }
+  .swatch[data-c="grape"]   .dot { background:#6a4ca8; } .swatch[data-c="grape"]   .dot::after { background:#f4c95d; }
+  .swatch[data-c="terracotta"] .dot { background:#9a4a2d; } .swatch[data-c="terracotta"] .dot::after { background:#3a8a8a; }
+  .swatch[data-c="ink"]     .dot { background:#1a1a1a; } .swatch[data-c="ink"]     .dot::after { background:#c98a2a; }
+
+  .ph-toggle { display:inline-flex; align-items:center; gap: 6px; font-family: 'Gaegu', cursive; font-size: 14px; border: 1.5px solid var(--ui-line); background: #fff; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .ph-toggle.on { background: var(--ui-line); color: #fff; }
+  body[data-ph="on"] [data-slot] { font-family: 'Space Mono', monospace !important; font-style: normal !important; letter-spacing: 0 !important; text-transform: none !important; font-weight: 700 !important; }
+
+  section.size-block { margin-bottom: 56px; }
+  .size-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  .size-head .num { font-family: 'Nanum Pen Script', cursive; font-size: 38px; background: var(--ui-line); color: #fff; width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; line-height: 1; padding-top: 4px; }
+  .size-head .name { font-family: 'Nanum Pen Script', cursive; font-size: 32px; line-height: 1; }
+  .size-head .spec { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); border: 1px dashed var(--ui-line); padding: 4px 8px; background: #fff; }
+  .size-head .spec b { color: var(--ui-line); }
+  .size-head .note { font-family: 'Gaegu', cursive; font-size: 15px; color: var(--ui-muted); }
+
+  .set-label { display: flex; align-items: center; gap: 10px; font-family: 'Nanum Pen Script', cursive; font-size: 24px; margin: 28px 0 12px; color: var(--ui-line); }
+  .set-label::after { content:""; flex:1; height: 0; border-top: 1.5px dashed var(--ui-muted); }
+  .set-label .pill { background: var(--ui-line); color:#fff; font-family: 'Space Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+  .set-label .desc { font-family: 'Gaegu', cursive; font-size: 16px; color: var(--ui-muted); }
+
+  .opt { background: #fff; border: 1.5px solid var(--ui-line); border-radius: 4px; padding: 16px; margin-bottom: 14px; position: relative; }
+  .opt .tag { position: absolute; top: -10px; left: 14px; background: var(--ui-bg); padding: 0 6px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-line); }
+  .opt .row { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px dashed var(--ui-muted); }
+  .opt .row:last-of-type { border-bottom: none; }
+  .opt .row .label { width: 100px; flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-muted); }
+  .opt .row .label b { color: var(--ui-line); display:block; }
+  .opt .row .label .v { display:block; margin-top: 2px; font-family: 'Gaegu',cursive; font-size: 13px; color: var(--accent); }
+  .opt .row .stage { flex: 1; min-width: 0; overflow-x: auto; padding-bottom: 4px; }
+  .opt .meta { display: flex; justify-content: space-between; align-items: center; font-family: 'Gaegu', cursive; font-size: 14px; color: var(--ui-muted); padding-top: 10px; margin-top: 6px; border-top: 1px dashed var(--ui-muted); }
+  .opt .meta .id { color: var(--ui-line); font-weight: 700; }
+  .opt button.pick { background: none; border: 1px solid var(--ui-line); font-family: 'Gaegu', cursive; font-size: 13px; padding: 3px 10px; cursor: pointer; border-radius: 3px; }
+  .opt button.pick:hover { background: var(--ui-line); color:#fff; }
+
+  .title-45 { width: calc(221 * var(--mm)); height: calc(45 * var(--mm)); position: relative; background: var(--paper); overflow: hidden; }
+  .title-30 { width: calc(221 * var(--mm)); height: calc(30 * var(--mm)); position: relative; background: var(--paper); overflow: hidden; }
+  .show-cells .cell { outline: 1px dashed rgba(220,60,60,.55); outline-offset: -1px; }
+
+  .ttl1 { font-family: 'Noto Sans KR'; font-weight: 900; color: var(--ink); letter-spacing: -.01em; line-height: 1; }
+  .ttl2 { font-family: 'Noto Sans KR'; font-weight: 400; color: var(--muted); letter-spacing: .02em; }
+  .ttl3 { font-family: 'Inter', 'Noto Sans KR'; font-weight: 900; letter-spacing: -.01em; line-height: 1; }
+  .folder { font-family: 'Noto Sans KR'; font-weight: 700; font-size: 11px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+  .date   { font-family: 'Inter', monospace; font-weight: 500; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+  .memo   { font-family: 'Noto Sans KR'; font-weight: 400; font-size: 11px; color: var(--muted); }
+  .logo   { font-family: 'Inter', monospace; font-weight: 700; color: var(--accent); border: 1px solid var(--accent); padding: 3px 10px; letter-spacing: .14em; font-size: 11px; display: inline-block; }
+
+  .re-label {
+    font-family: 'Noto Sans KR'; font-weight: 900; font-size: 11px;
+    letter-spacing: .18em; color: var(--accent-line);
+    padding: 3px 12px 3px 14px;
+    border-left: 2px solid var(--accent-line);
+    white-space: nowrap; flex-shrink: 0; line-height: 1;
+  }
+  .c-student .student-row {
+    flex: 1; min-width: 0;
+    display: grid;
+    grid-template-columns: auto 1fr auto 60px auto 60px auto 1fr;
+    align-items: center; gap: 8px; padding: 0 14px;
+  }
+  .c-student .student-row .lbl { font-family: 'Noto Sans KR'; font-weight: 700; font-size: 11px; color: var(--accent-line); white-space: nowrap; }
+  .c-student .student-row .fill { border-bottom: 1px solid var(--accent-line); height: 18px; font-family: 'Noto Sans KR'; font-size: 12px; color: var(--ink); display: flex; align-items: center; padding: 0 6px; min-width: 0; white-space: nowrap; overflow: hidden; }
+  .title-30 .c-student .student-row { gap: 6px; padding: 0 12px; }
+  .title-30 .c-student .student-row .fill { height: 16px; font-size: 11px; }
+
+  /* ============================================================
+     SET A — 도형 컴포지션 (좌측 SVG 도형 컴포지션 + 우측 텍스트)
+     SVG 인라인 — fill 은 var(--accent) / var(--accent-2) 참조
+  ============================================================ */
+  .setA-45, .setA-30 { display:grid; }
+  .setA-45 { grid-template-columns: calc(60 * var(--mm)) 1fr; }
+  .setA-45 .gfx { grid-column: 1; position: relative; overflow: hidden; background: var(--accent-soft); }
+  .setA-45 .gfx svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .setA-45 .gfx .c-t3 { position: absolute; top: 12px; left: 16px; color: #fff; display:flex; flex-direction: column; gap: 4px; z-index: 2; }
+  .setA-45 .gfx .c-t3 .label { font-family:'Noto Sans KR'; font-weight: 700; font-size: 10px; letter-spacing: .2em; color: rgba(255,255,255,.85); }
+  .setA-45 .gfx .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 56px; color: #fff; line-height: 0.9; }
+  .setA-45 .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 12px 18px; gap: 4px; }
+  .setA-45 .right .top { display:flex; align-items:center; gap: 14px; }
+  .setA-45 .right .top .c-folder { }
+  .setA-45 .right .top .c-memo { margin-left: auto; }
+  .setA-45 .right .top .c-logo { margin-left: 14px; }
+  .setA-45 .right .c-t1 .ttl1 { font-size: 30px; }
+  .setA-45 .right .bot { display:flex; align-items: center; gap: 12px; padding-top: 6px; border-top: 1px solid var(--accent); }
+  .setA-45 .right .bot .c-t2 .ttl2 { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .setA-45 .right .bot .c-date { margin-left: auto; }
+
+  .setA-45-r { grid-template-rows: 1fr calc(10 * var(--mm)); grid-template-columns: calc(60 * var(--mm)) 1fr; }
+  .setA-45-r .gfx { grid-row: 1 / 3; }
+  .setA-45-r .right { grid-row: 1; padding: 8px 18px; gap: 2px; }
+  .setA-45-r .right .c-t1 .ttl1 { font-size: 26px; }
+  .setA-45-r .c-student { grid-column: 2; grid-row: 2; display:flex; align-items:center; border-top: 1px solid var(--accent); }
+
+  .setA-30 { grid-template-columns: calc(46 * var(--mm)) 1fr; }
+  .setA-30 .gfx { grid-column: 1; position: relative; overflow: hidden; background: var(--accent-soft); }
+  .setA-30 .gfx svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .setA-30 .gfx .c-t3 { position: absolute; top: 8px; left: 12px; z-index: 2; }
+  .setA-30 .gfx .c-t3 .label { display: none; }
+  .setA-30 .gfx .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 38px; color: #fff; line-height: 0.9; }
+  .setA-30 .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 8px 14px; gap: 2px; }
+  .setA-30 .right .top { display:flex; align-items:center; gap: 10px; }
+  .setA-30 .right .top .c-memo { font-size: 10px; margin-left: auto; }
+  .setA-30 .right .top .c-logo { }
+  .setA-30 .right .c-t1 .ttl1 { font-size: 22px; }
+  .setA-30 .right .bot { display:flex; align-items: center; gap: 10px; padding-top: 3px; border-top: 1px solid var(--accent); }
+  .setA-30 .right .bot .c-t2 .ttl2 { font-size: 11px; color: var(--ink); }
+  .setA-30 .right .bot .c-date { margin-left: auto; }
+
+  .setA-30-r { grid-template-rows: 1fr calc(9 * var(--mm)); grid-template-columns: calc(46 * var(--mm)) 1fr; }
+  .setA-30-r .gfx { grid-row: 1 / 3; }
+  .setA-30-r .right { grid-row: 1; padding: 4px 14px; gap: 1px; }
+  .setA-30-r .right .c-t1 .ttl1 { font-size: 18px; }
+  .setA-30-r .right .bot .c-t2 .ttl2 { font-size: 10px; }
+  .setA-30-r .c-student { grid-column: 2; grid-row: 2; display:flex; align-items:center; border-top: 1px solid var(--accent); }
+
+
+  /* ============================================================
+     SET B — 사선 스트라이프 + 빅 넘버
+     CSS 사선 스트라이프 백그라운드 (HWPX 변환 시 이미지 패턴으로)
+  ============================================================ */
+  .setB-45, .setB-30 { display:grid; position: relative; }
+  .setB-45 {
+    grid-template-columns: 1fr;
+    background:
+      repeating-linear-gradient(45deg, var(--accent) 0 2px, transparent 2px 12px),
+      var(--paper);
+  }
+  .setB-45 .frame {
+    position: absolute; inset: 8px;
+    background: var(--paper);
+    border: 2px solid var(--accent);
+    display:grid;
+    grid-template-columns: calc(50 * var(--mm)) 1fr;
+    grid-template-rows: auto 1fr auto;
+    padding: 0;
+  }
+  .setB-45 .frame .c-t3 {
+    grid-column: 1; grid-row: 1 / 4;
+    background: var(--accent); color: #fff;
+    display:flex; flex-direction: column; align-items:flex-start; justify-content:center;
+    padding: 0 0 0 18px; gap: 4px;
+    position: relative;
+  }
+  .setB-45 .frame .c-t3::before {
+    content:""; position: absolute; right: 0; top: 0; bottom: 0; width: 14px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+  }
+  .setB-45 .frame .c-t3 .label { font-family:'Noto Sans KR'; font-weight: 700; font-size: 11px; letter-spacing: .2em; color: rgba(255,255,255,.85); }
+  .setB-45 .frame .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 64px; color: #fff; line-height: 0.85; }
+  .setB-45 .frame .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 10px 16px; gap: 4px; }
+  .setB-45 .frame .right .top { display:flex; align-items:center; gap: 14px; }
+  .setB-45 .frame .right .top .c-memo { margin-left: auto; }
+  .setB-45 .frame .right .top .c-logo { }
+  .setB-45 .frame .right .c-t1 .ttl1 { font-size: 28px; }
+  .setB-45 .frame .right .bot { display:flex; align-items: center; gap: 12px; padding-top: 4px; border-top: 1px solid var(--accent-soft); }
+  .setB-45 .frame .right .bot .c-t2 .ttl2 { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .setB-45 .frame .right .bot .c-date { margin-left: auto; }
+
+  .setB-45-r .frame { grid-template-rows: 1fr auto; }
+  .setB-45-r .frame .right { grid-row: 1; padding: 8px 16px; gap: 2px; }
+  .setB-45-r .frame .right .c-t1 .ttl1 { font-size: 24px; }
+  .setB-45-r .frame .c-student { grid-column: 1 / 3; grid-row: 2; display:flex; align-items:center; border-top: 1.5px solid var(--accent); height: calc(10 * var(--mm)); background: var(--accent-soft); }
+
+  .setB-30 {
+    background:
+      repeating-linear-gradient(45deg, var(--accent) 0 2px, transparent 2px 12px),
+      var(--paper);
+  }
+  .setB-30 .frame {
+    position: absolute; inset: 6px;
+    background: var(--paper); border: 1.5px solid var(--accent);
+    display:grid; grid-template-columns: calc(38 * var(--mm)) 1fr; grid-template-rows: auto 1fr auto;
+  }
+  .setB-30 .frame .c-t3 { grid-column: 1; grid-row: 1 / 4; background: var(--accent); color: #fff; display:flex; flex-direction:column; align-items: flex-start; justify-content: center; padding: 0 0 0 14px; gap: 2px; }
+  .setB-30 .frame .c-t3 .label { font-family:'Noto Sans KR'; font-weight: 700; font-size: 9px; letter-spacing: .18em; color: rgba(255,255,255,.85); }
+  .setB-30 .frame .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 42px; color: #fff; line-height: 0.85; }
+  .setB-30 .frame .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 8px 14px; gap: 2px; }
+  .setB-30 .frame .right .top { display:flex; align-items:center; gap: 10px; }
+  .setB-30 .frame .right .top .c-memo { font-size: 10px; margin-left: auto; }
+  .setB-30 .frame .right .c-t1 .ttl1 { font-size: 20px; }
+  .setB-30 .frame .right .bot { display:flex; align-items: center; gap: 10px; padding-top: 3px; border-top: 1px solid var(--accent-soft); }
+  .setB-30 .frame .right .bot .c-t2 .ttl2 { font-size: 11px; color: var(--ink); }
+  .setB-30 .frame .right .bot .c-date { margin-left: auto; }
+
+  .setB-30-r .frame { grid-template-rows: 1fr auto; }
+  .setB-30-r .frame .right { grid-row: 1; padding: 4px 12px; gap: 1px; }
+  .setB-30-r .frame .right .c-t1 .ttl1 { font-size: 17px; }
+  .setB-30-r .frame .c-student { grid-column: 1 / 3; grid-row: 2; display:flex; align-items:center; border-top: 1.5px solid var(--accent); height: calc(8 * var(--mm)); background: var(--accent-soft); }
+
+
+  /* ============================================================
+     SET C — 풀 컬러 필드 + 컷아웃 회차
+     좌측 거대 컬러 패널 / 그 위에 회차 화이트로
+  ============================================================ */
+  .setC-45, .setC-30 { display:grid; }
+  .setC-45 { grid-template-columns: calc(100 * var(--mm)) 1fr; }
+  .setC-45 .gfx { grid-column: 1; background: var(--accent); color: #fff; position: relative; overflow: hidden; display:flex; flex-direction: column; justify-content: space-between; padding: 14px 18px; }
+  .setC-45 .gfx .deco-svg { position: absolute; right: -20px; top: -20px; width: 140px; height: 140px; opacity: 0.18; }
+  .setC-45 .gfx .top { display:flex; align-items:center; gap: 10px; z-index: 2; position: relative; }
+  .setC-45 .gfx .top .c-folder { color: rgba(255,255,255,.92); }
+  .setC-45 .gfx .c-t3 { z-index: 2; position: relative; }
+  .setC-45 .gfx .c-t3 .label { font-family:'Noto Sans KR'; font-weight: 700; font-size: 10px; letter-spacing: .2em; color: rgba(255,255,255,.75); display: block; }
+  .setC-45 .gfx .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 72px; color: #fff; line-height: 0.85; letter-spacing: -.03em; }
+  .setC-45 .gfx .bot-meta { display:flex; align-items:center; gap: 10px; z-index: 2; position: relative; }
+  .setC-45 .gfx .bot-meta .c-memo { color: rgba(255,255,255,.85); font-size: 11px; }
+  .setC-45 .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 14px 18px; gap: 6px; }
+  .setC-45 .right .topr { display:flex; align-items:center; justify-content: flex-end; }
+  .setC-45 .right .c-t1 { display:flex; align-items:center; }
+  .setC-45 .right .c-t1 .ttl1 { font-size: 28px; }
+  .setC-45 .right .botr { display:flex; align-items: center; gap: 12px; padding-top: 6px; border-top: 1px solid var(--accent); }
+  .setC-45 .right .botr .c-t2 .ttl2 { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .setC-45 .right .botr .c-date { margin-left: auto; }
+
+  .setC-45-r { grid-template-rows: 1fr calc(10 * var(--mm)); }
+  .setC-45-r .gfx { grid-row: 1 / 3; }
+  .setC-45-r .right { grid-row: 1; padding: 10px 18px; gap: 3px; }
+  .setC-45-r .right .c-t1 .ttl1 { font-size: 24px; }
+  .setC-45-r .c-student { grid-column: 2; grid-row: 2; display:flex; align-items:center; border-top: 1px solid var(--accent); background: var(--accent-soft); }
+
+  .setC-30 { grid-template-columns: calc(80 * var(--mm)) 1fr; }
+  .setC-30 .gfx { grid-column: 1; background: var(--accent); color: #fff; position: relative; overflow: hidden; display:flex; flex-direction: column; justify-content: space-between; padding: 8px 14px; }
+  .setC-30 .gfx .deco-svg { position: absolute; right: -10px; top: -10px; width: 90px; height: 90px; opacity: 0.18; }
+  .setC-30 .gfx .top { display:flex; align-items:center; gap: 10px; z-index: 2; position: relative; }
+  .setC-30 .gfx .top .c-folder { color: rgba(255,255,255,.92); font-size: 10px; }
+  .setC-30 .gfx .c-t3 { z-index: 2; position: relative; }
+  .setC-30 .gfx .c-t3 .label { display: none; }
+  .setC-30 .gfx .c-t3 .ttl3 { font-family:'Inter'; font-weight: 900; font-size: 50px; color: #fff; line-height: 0.85; letter-spacing: -.03em; }
+  .setC-30 .gfx .bot-meta { display:flex; align-items:center; gap: 8px; z-index: 2; position: relative; }
+  .setC-30 .gfx .bot-meta .c-memo { color: rgba(255,255,255,.85); font-size: 10px; }
+  .setC-30 .right { grid-column: 2; display:grid; grid-template-rows: auto 1fr auto; padding: 8px 14px; gap: 3px; }
+  .setC-30 .right .topr { display:flex; align-items:center; justify-content: flex-end; }
+  .setC-30 .right .c-t1 .ttl1 { font-size: 20px; }
+  .setC-30 .right .botr { display:flex; align-items: center; gap: 10px; padding-top: 3px; border-top: 1px solid var(--accent); }
+  .setC-30 .right .botr .c-t2 .ttl2 { font-size: 11px; color: var(--ink); }
+  .setC-30 .right .botr .c-date { margin-left: auto; }
+
+  .setC-30-r { grid-template-rows: 1fr calc(9 * var(--mm)); }
+  .setC-30-r .gfx { grid-row: 1 / 3; }
+  .setC-30-r .right { grid-row: 1; padding: 4px 14px; gap: 1px; }
+  .setC-30-r .right .c-t1 .ttl1 { font-size: 17px; }
+  .setC-30-r .c-student { grid-column: 2; grid-row: 2; display:flex; align-items:center; border-top: 1px solid var(--accent); background: var(--accent-soft); }
+
+
+  .footnote { margin-top: 40px; padding-top: 18px; border-top: 1.5px dashed var(--ui-line); font-family: 'Gaegu', cursive; font-size: 14px; color: var(--ui-muted); line-height: 1.6; }
+  .footnote code { font-family: 'Space Mono', monospace; font-size: 12px; background: #fff; border: 1px dashed var(--ui-line); padding: 1px 5px; }
+  .footnote b { color: var(--ui-line); }
+  .footnote .slots { display:flex; flex-wrap:wrap; gap: 4px 12px; margin-top: 4px; }
+  .footnote .slots span { font-family:'Space Mono', monospace; color: var(--ui-line); font-size: 12px; }
+  .footnote .slots em { color: var(--ui-muted); font-style: normal; }
+
+  #toast { position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px); background: var(--ui-line); color: #fff; font-family: 'Gaegu', cursive; font-size: 14px; padding: 8px 16px; border-radius: 999px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 100; }
+  #toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body data-concept="navy" data-ph="off">
+
+<div class="topbar">
+  <div>
+    <h1>HWPX 타이틀 블록 — Graphic</h1>
+    <div class="sub">
+      <b>221 × 45 / 30 mm</b> · 도형/그래픽 강조 · SVG는 컨셉 컬러를 그대로 따라감
+    </div>
+  </div>
+  <div class="toolbar">
+    <button class="ph-toggle" id="phToggle">@ 플레이스홀더 보기</button>
+    <button class="ph-toggle" id="cellToggle">셀 가이드 표시</button>
+    <div class="concept-picker">
+      <span class="lbl">컬러:</span>
+      <button class="swatch active" data-c="navy"><span class="dot"></span>네이비</button>
+      <button class="swatch" data-c="coral"><span class="dot"></span>코랄</button>
+      <button class="swatch" data-c="forest"><span class="dot"></span>포레스트</button>
+      <button class="swatch" data-c="grape"><span class="dot"></span>그레이프</button>
+      <button class="swatch" data-c="terracotta"><span class="dot"></span>테라코타</button>
+      <button class="swatch" data-c="ink"><span class="dot"></span>잉크</button>
+    </div>
+  </div>
+</div>
+
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">G</span>
+    <span class="name">그래픽 타이틀 블록</span>
+    <span class="spec"><b>221 × 45 mm</b> · 884 × 180 px</span>
+    <span class="spec"><b>221 × 30 mm</b> · 884 × 120 px</span>
+    <span class="note">— 3세트 × 4변형</span>
+  </div>
+
+
+  <!-- ===== SET A — 도형 컴포지션 ===== -->
+  <div class="set-label">
+    <span class="pill">SET A</span>
+    <span>도형 컴포지션 (큰 원 + 보조 도형)</span>
+    <span class="desc">좌측 SVG 컴포지션 + 우측 깔끔한 텍스트</span>
+  </div>
+  <div class="opt">
+    <span class="tag">A · 4 variations</span>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-45 setA-45">
+          <div class="cell gfx">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="none">
+              <circle cx="180" cy="80" r="120" fill="var(--accent)"/>
+              <circle cx="60" cy="160" r="40" fill="var(--accent-2)"/>
+              <rect x="-10" y="20" width="32" height="32" fill="var(--accent-line)"/>
+            </svg>
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검 · 인쇄용 표지</span>
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="bot">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산과 연속성</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-45 setA-45 setA-45-r">
+          <div class="cell gfx">
+            <svg viewBox="0 0 240 180" preserveAspectRatio="none">
+              <circle cx="180" cy="80" r="120" fill="var(--accent)"/>
+              <circle cx="60" cy="160" r="40" fill="var(--accent-2)"/>
+              <rect x="-10" y="20" width="32" height="32" fill="var(--accent-line)"/>
+            </svg>
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검</span>
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="bot">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+          <div class="c-student">
+            <span class="re-label">재학습지</span>
+            <div class="student-row">
+              <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중학교</span>
+              <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+              <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+              <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-30 setA-30">
+          <div class="cell gfx">
+            <svg viewBox="0 0 184 120" preserveAspectRatio="none">
+              <circle cx="140" cy="60" r="80" fill="var(--accent)"/>
+              <circle cx="50" cy="105" r="28" fill="var(--accent-2)"/>
+              <rect x="-6" y="12" width="22" height="22" fill="var(--accent-line)"/>
+            </svg>
+            <div class="c-t3"><span class="ttl3" data-slot="@Title3@">03</span></div>
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="bot">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-30 setA-30 setA-30-r">
+          <div class="cell gfx">
+            <svg viewBox="0 0 184 120" preserveAspectRatio="none">
+              <circle cx="140" cy="60" r="80" fill="var(--accent)"/>
+              <circle cx="50" cy="105" r="28" fill="var(--accent-2)"/>
+              <rect x="-6" y="12" width="22" height="22" fill="var(--accent-line)"/>
+            </svg>
+            <div class="c-t3"><span class="ttl3" data-slot="@Title3@">03</span></div>
+          </div>
+          <div class="right">
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="bot">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+          <div class="c-student">
+            <span class="re-label">재학습지</span>
+            <div class="student-row">
+              <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중</span>
+              <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+              <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+              <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta"><span class="id">setA · geo-composition</span>
+      <div class="actions"><button class="pick">세트로 선택</button></div></div>
+  </div>
+
+
+  <!-- ===== SET B — 사선 스트라이프 + 빅 넘버 ===== -->
+  <div class="set-label">
+    <span class="pill">SET B</span>
+    <span>사선 스트라이프 + 빅 넘버</span>
+    <span class="desc">외곽 사선 패턴 + 내부 화이트 프레임</span>
+  </div>
+  <div class="opt">
+    <span class="tag">B · 4 variations</span>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-45 setB-45">
+          <div class="frame">
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="right">
+              <div class="top">
+                <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+                <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검 · 인쇄용 표지</span>
+                <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+              </div>
+              <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+              <div class="bot">
+                <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산과 연속성</span></div>
+                <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-45 setB-45 setB-45-r">
+          <div class="frame">
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="right">
+              <div class="top">
+                <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+                <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검</span>
+                <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+              </div>
+              <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+              <div class="bot">
+                <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+                <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+              </div>
+            </div>
+            <div class="c-student">
+              <span class="re-label">재학습지</span>
+              <div class="student-row">
+                <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중학교</span>
+                <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+                <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+                <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-30 setB-30">
+          <div class="frame">
+            <div class="c-t3">
+              <span class="label">EP</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="right">
+              <div class="top">
+                <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+                <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+                <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+              </div>
+              <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+              <div class="bot">
+                <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+                <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-30 setB-30 setB-30-r">
+          <div class="frame">
+            <div class="c-t3">
+              <span class="label">EP</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="right">
+              <div class="top">
+                <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+                <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+                <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+              </div>
+              <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+              <div class="bot">
+                <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+                <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+              </div>
+            </div>
+            <div class="c-student">
+              <span class="re-label">재학습지</span>
+              <div class="student-row">
+                <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중</span>
+                <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+                <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+                <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta"><span class="id">setB · stripe-frame</span>
+      <div class="actions"><button class="pick">세트로 선택</button></div></div>
+  </div>
+
+
+  <!-- ===== SET C — 컬러 필드 + 워터마크 SVG ===== -->
+  <div class="set-label">
+    <span class="pill">SET C</span>
+    <span>풀 컬러 필드 + SVG 워터마크</span>
+    <span class="desc">좌측 컬러 패널 + 워터마크 도형 + 우측 메타</span>
+  </div>
+  <div class="opt">
+    <span class="tag">C · 4 variations</span>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-45 setC-45">
+          <div class="cell gfx">
+            <svg class="deco-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="20" fill="#fff"/>
+            </svg>
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+            </div>
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="bot-meta">
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검 · 인쇄용 표지</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="topr">
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="botr">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산과 연속성</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>45mm</b>884×180<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-45 setC-45 setC-45-r">
+          <div class="cell gfx">
+            <svg class="deco-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="20" fill="#fff"/>
+            </svg>
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+            </div>
+            <div class="c-t3">
+              <span class="label">EPISODE</span>
+              <span class="ttl3" data-slot="@Title3@">03</span>
+            </div>
+            <div class="bot-meta">
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리 점검</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="topr">
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="botr">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+          <div class="c-student">
+            <span class="re-label">재학습지</span>
+            <div class="student-row">
+              <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중학교</span>
+              <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+              <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+              <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">기본</span></div>
+      <div class="stage">
+        <div class="title-30 setC-30">
+          <div class="cell gfx">
+            <svg class="deco-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="20" fill="#fff"/>
+            </svg>
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+            </div>
+            <div class="c-t3"><span class="ttl3" data-slot="@Title3@">03</span></div>
+            <div class="bot-meta">
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="topr">
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="botr">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="label"><b>30mm</b>884×120<span class="v">재학습지</span></div>
+      <div class="stage">
+        <div class="title-30 setC-30 setC-30-r">
+          <div class="cell gfx">
+            <svg class="deco-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#fff" stroke-width="2"/>
+              <circle cx="50" cy="50" r="20" fill="#fff"/>
+            </svg>
+            <div class="top">
+              <span class="c-folder folder" data-slot="@Folder@">미적분 II</span>
+            </div>
+            <div class="c-t3"><span class="ttl3" data-slot="@Title3@">03</span></div>
+            <div class="bot-meta">
+              <span class="c-memo memo" data-slot="@Memo1@">단원 마무리</span>
+            </div>
+          </div>
+          <div class="right">
+            <div class="topr">
+              <span class="c-logo"><span class="logo" data-slot="@Logo1@">logo</span></span>
+            </div>
+            <div class="c-t1"><span class="ttl1" data-slot="@Title1@">함수의 극한과 연속</span></div>
+            <div class="botr">
+              <div class="c-t2"><span class="ttl2" data-slot="@Title2@">극한값의 계산</span></div>
+              <span class="c-date date" data-slot="@Date@">2026.03.04</span>
+            </div>
+          </div>
+          <div class="c-student">
+            <span class="re-label">재학습지</span>
+            <div class="student-row">
+              <span class="lbl">학교</span><span class="fill" data-slot="@School@">예지중</span>
+              <span class="lbl">학년</span><span class="fill" data-slot="@Grade@">2</span>
+              <span class="lbl">반</span><span class="fill" data-slot="@Class@">5</span>
+              <span class="lbl">이름</span><span class="fill" data-slot="@Name@">홍길동</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta"><span class="id">setC · color-field</span>
+      <div class="actions"><button class="pick">세트로 선택</button></div></div>
+  </div>
+
+</section>
+
+<div class="footnote">
+  ✏️ <b>Graphic 가이드</b><br/>
+  · 비율 <code>1mm = 4px</code> · <b>221 × 45 / 30 mm</b><br/>
+  · <b>SVG 인라인 컴포지션</b>에서 <code>fill="var(--accent)"</code>로 색 참조 — 컨셉 컬러를 그대로 따라감<br/>
+  · HWPX 변환 시: 그래픽 영역은 단일 PNG/SVG로 익스포트 → 색상별 버전 미리 준비 OR 셀 배경색 + 단순 도형 조합으로 분해 가능<br/>
+  · SET B의 사선 스트라이프는 HWPX에서 작은 PNG 패턴 반복으로 구현<br/>
+  <div class="slots">
+    <span>@Title1@ <em>대제목</em></span>
+    <span>@Title2@ <em>소제목</em></span>
+    <span>@Title3@ <em>회차</em></span>
+    <span>@Folder@ <em>폴더명</em></span>
+    <span>@Date@ <em>날짜</em></span>
+    <span>@Logo1@ <em>로고</em></span>
+    <span>@Memo1@ <em>메모</em></span>
+    <span>@School@ <em>학교</em></span>
+    <span>@Grade@ <em>학년</em></span>
+    <span>@Class@ <em>반</em></span>
+    <span>@Name@ <em>이름</em></span>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  document.querySelectorAll('.swatch').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.body.dataset.concept = b.dataset.c;
+    });
+  });
+
+  const phBtn = document.getElementById('phToggle');
+  document.querySelectorAll('[data-slot]').forEach(el => { el.dataset.original = el.textContent.trim(); });
+  phBtn.addEventListener('click', () => {
+    const wasOn = document.body.dataset.ph === 'on';
+    const nowOn = !wasOn;
+    document.body.dataset.ph = nowOn ? 'on' : 'off';
+    phBtn.classList.toggle('on', nowOn);
+    phBtn.textContent = nowOn ? '실제 값 보기' : '@ 플레이스홀더 보기';
+    document.querySelectorAll('[data-slot]').forEach(el => {
+      el.textContent = nowOn ? el.dataset.slot : el.dataset.original;
+    });
+  });
+
+  const cellBtn = document.getElementById('cellToggle');
+  cellBtn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('show-cells');
+    cellBtn.classList.toggle('on', on);
+    cellBtn.textContent = on ? '셀 가이드 끄기' : '셀 가이드 표시';
+  });
+
+  const toast = document.getElementById('toast');
+  let t;
+  document.querySelectorAll('button.pick').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.target.closest('.opt');
+      const id = card.querySelector('.id')?.textContent || 'item';
+      const label = e.target.textContent.trim();
+      toast.textContent = `[${id}] ${label} ✓`;
+      toast.classList.add('show');
+      clearTimeout(t);
+      t = setTimeout(() => toast.classList.remove('show'), 1400);
+    });
+  });
+</script>
+</body>
+</html>

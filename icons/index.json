@@ -1,0 +1,2463 @@
+[
+  {
+    "id": "Group-10",
+    "variants": [
+      {
+        "file": "Group-10_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Group-10_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-11",
+    "variants": [
+      {
+        "file": "Group-11_v1.svg",
+        "colors": [
+          "#FF8000",
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-11_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-12",
+    "variants": [
+      {
+        "file": "Group-12_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-12_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-13",
+    "variants": [
+      {
+        "file": "Group-13_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group-13_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-14",
+    "variants": [
+      {
+        "file": "Group-14_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-14_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-15",
+    "variants": [
+      {
+        "file": "Group-15_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-15_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-16",
+    "variants": [
+      {
+        "file": "Group-16_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-16_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-17",
+    "variants": [
+      {
+        "file": "Group-17_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-17_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-18",
+    "variants": [
+      {
+        "file": "Group-18_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-18_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-19",
+    "variants": [
+      {
+        "file": "Group-19_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-19_v2.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-1",
+    "variants": [
+      {
+        "file": "Group-1_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-1_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-1_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-1_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-1_v5.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-20",
+    "variants": [
+      {
+        "file": "Group-20_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-20_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-21",
+    "variants": [
+      {
+        "file": "Group-21_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Group-21_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-22",
+    "variants": [
+      {
+        "file": "Group-22_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group-22_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-23",
+    "variants": [
+      {
+        "file": "Group-23_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-23_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-24",
+    "variants": [
+      {
+        "file": "Group-24_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-24_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-25",
+    "variants": [
+      {
+        "file": "Group-25_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-25_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-26",
+    "variants": [
+      {
+        "file": "Group-26_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-26_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-27",
+    "variants": [
+      {
+        "file": "Group-27_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-27_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-28",
+    "variants": [
+      {
+        "file": "Group-28_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group-28_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-29",
+    "variants": [
+      {
+        "file": "Group-29_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-29_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-2",
+    "variants": [
+      {
+        "file": "Group-2_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-2_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-2_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-2_v4.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-30",
+    "variants": [
+      {
+        "file": "Group-30_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-30_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-31",
+    "variants": [
+      {
+        "file": "Group-31_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-31_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-32",
+    "variants": [
+      {
+        "file": "Group-32_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-32_v2.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-33",
+    "variants": [
+      {
+        "file": "Group-33_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-33_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-34",
+    "variants": [
+      {
+        "file": "Group-34_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-34_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-35",
+    "variants": [
+      {
+        "file": "Group-35_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Group-35_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-36",
+    "variants": [
+      {
+        "file": "Group-36_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-36_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-37",
+    "variants": [
+      {
+        "file": "Group-37_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-37_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-38",
+    "variants": [
+      {
+        "file": "Group-38_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-38_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-39",
+    "variants": [
+      {
+        "file": "Group-39_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-3",
+    "variants": [
+      {
+        "file": "Group-3_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-3_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-3_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Group-3_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-40",
+    "variants": [
+      {
+        "file": "Group-40_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-41",
+    "variants": [
+      {
+        "file": "Group-41_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-4",
+    "variants": [
+      {
+        "file": "Group-4_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Group-4_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-4_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-4_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-5",
+    "variants": [
+      {
+        "file": "Group-5_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Group-5_v2.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Group-5_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-5_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-6",
+    "variants": [
+      {
+        "file": "Group-6_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-6_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-6_v3.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Group-6_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-7",
+    "variants": [
+      {
+        "file": "Group-7_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Group-7_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-7_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-8",
+    "variants": [
+      {
+        "file": "Group-8_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Group-8_v2.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group-9",
+    "variants": [
+      {
+        "file": "Group-9_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group-9_v2.svg",
+        "colors": [
+          "#FF8000",
+          "#FF4F4F"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Group",
+    "variants": [
+      {
+        "file": "Group_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group_v3.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Group_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Group_v5.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-10",
+    "variants": [
+      {
+        "file": "Vector-10_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-10_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-10_v3.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-10_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-11",
+    "variants": [
+      {
+        "file": "Vector-11_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-11_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-11_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-11_v4.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-12",
+    "variants": [
+      {
+        "file": "Vector-12_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-12_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-12_v3.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-12_v4.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-13",
+    "variants": [
+      {
+        "file": "Vector-13_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-13_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-13_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-13_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-14",
+    "variants": [
+      {
+        "file": "Vector-14_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-14_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-14_v3.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-14_v4.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-15",
+    "variants": [
+      {
+        "file": "Vector-15_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-15_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-15_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-15_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-16",
+    "variants": [
+      {
+        "file": "Vector-16_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-16_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-16_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-16_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-17",
+    "variants": [
+      {
+        "file": "Vector-17_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-17_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-17_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-17_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-18",
+    "variants": [
+      {
+        "file": "Vector-18_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-18_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-18_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-18_v4.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-19",
+    "variants": [
+      {
+        "file": "Vector-19_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-19_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-19_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-19_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-1",
+    "variants": [
+      {
+        "file": "Vector-1_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-1_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-1_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-1_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-20",
+    "variants": [
+      {
+        "file": "Vector-20_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-20_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-20_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-20_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-21",
+    "variants": [
+      {
+        "file": "Vector-21_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-21_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-21_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-21_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-22",
+    "variants": [
+      {
+        "file": "Vector-22_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-22_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-22_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-22_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-23",
+    "variants": [
+      {
+        "file": "Vector-23_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-23_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-23_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-23_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-24",
+    "variants": [
+      {
+        "file": "Vector-24_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-24_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-24_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-24_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-25",
+    "variants": [
+      {
+        "file": "Vector-25_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-25_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-25_v3.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-25_v4.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-26",
+    "variants": [
+      {
+        "file": "Vector-26_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-26_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-26_v3.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-26_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-27",
+    "variants": [
+      {
+        "file": "Vector-27_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-27_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-27_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-27_v4.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-28",
+    "variants": [
+      {
+        "file": "Vector-28_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-28_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-28_v3.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-28_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-29",
+    "variants": [
+      {
+        "file": "Vector-29_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-29_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-29_v3.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-29_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-2",
+    "variants": [
+      {
+        "file": "Vector-2_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-2_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-2_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-2_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-30",
+    "variants": [
+      {
+        "file": "Vector-30_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-30_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-30_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-30_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-31",
+    "variants": [
+      {
+        "file": "Vector-31_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-31_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-31_v3.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-31_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-32",
+    "variants": [
+      {
+        "file": "Vector-32_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-32_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-32_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-32_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-33",
+    "variants": [
+      {
+        "file": "Vector-33_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-33_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-33_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-33_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-34",
+    "variants": [
+      {
+        "file": "Vector-34_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-34_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-34_v3.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-34_v4.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-35",
+    "variants": [
+      {
+        "file": "Vector-35_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-35_v2.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-36",
+    "variants": [
+      {
+        "file": "Vector-36_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-36_v2.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-37",
+    "variants": [
+      {
+        "file": "Vector-37_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-37_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-38",
+    "variants": [
+      {
+        "file": "Vector-38_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-38_v2.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-39",
+    "variants": [
+      {
+        "file": "Vector-39_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-39_v2.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-3",
+    "variants": [
+      {
+        "file": "Vector-3_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-3_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-3_v3.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      },
+      {
+        "file": "Vector-3_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-40",
+    "variants": [
+      {
+        "file": "Vector-40_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-41",
+    "variants": [
+      {
+        "file": "Vector-41_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-42",
+    "variants": [
+      {
+        "file": "Vector-42_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-43",
+    "variants": [
+      {
+        "file": "Vector-43_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-44",
+    "variants": [
+      {
+        "file": "Vector-44_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-45",
+    "variants": [
+      {
+        "file": "Vector-45_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-46",
+    "variants": [
+      {
+        "file": "Vector-46_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-47",
+    "variants": [
+      {
+        "file": "Vector-47_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-48",
+    "variants": [
+      {
+        "file": "Vector-48_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-49",
+    "variants": [
+      {
+        "file": "Vector-49_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-4",
+    "variants": [
+      {
+        "file": "Vector-4_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-4_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-4_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-4_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-50",
+    "variants": [
+      {
+        "file": "Vector-50_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-51",
+    "variants": [
+      {
+        "file": "Vector-51_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-52",
+    "variants": [
+      {
+        "file": "Vector-52_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-53",
+    "variants": [
+      {
+        "file": "Vector-53_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-54",
+    "variants": [
+      {
+        "file": "Vector-54_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-55",
+    "variants": [
+      {
+        "file": "Vector-55_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-56",
+    "variants": [
+      {
+        "file": "Vector-56_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-57",
+    "variants": [
+      {
+        "file": "Vector-57_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-58",
+    "variants": [
+      {
+        "file": "Vector-58_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-59",
+    "variants": [
+      {
+        "file": "Vector-59_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-5",
+    "variants": [
+      {
+        "file": "Vector-5_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-5_v2.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-5_v3.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-5_v4.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-60",
+    "variants": [
+      {
+        "file": "Vector-60_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-61",
+    "variants": [
+      {
+        "file": "Vector-61_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-62",
+    "variants": [
+      {
+        "file": "Vector-62_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-63",
+    "variants": [
+      {
+        "file": "Vector-63_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-64",
+    "variants": [
+      {
+        "file": "Vector-64_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-65",
+    "variants": [
+      {
+        "file": "Vector-65_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-66",
+    "variants": [
+      {
+        "file": "Vector-66_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-67",
+    "variants": [
+      {
+        "file": "Vector-67_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-68",
+    "variants": [
+      {
+        "file": "Vector-68_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-69",
+    "variants": [
+      {
+        "file": "Vector-69_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-6",
+    "variants": [
+      {
+        "file": "Vector-6_v1.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-6_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-6_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-6_v4.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-70",
+    "variants": [
+      {
+        "file": "Vector-70_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-71",
+    "variants": [
+      {
+        "file": "Vector-71_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-72",
+    "variants": [
+      {
+        "file": "Vector-72_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-73",
+    "variants": [
+      {
+        "file": "Vector-73_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-74",
+    "variants": [
+      {
+        "file": "Vector-74_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-75",
+    "variants": [
+      {
+        "file": "Vector-75_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-76",
+    "variants": [
+      {
+        "file": "Vector-76_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-77",
+    "variants": [
+      {
+        "file": "Vector-77_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-78",
+    "variants": [
+      {
+        "file": "Vector-78_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-79",
+    "variants": [
+      {
+        "file": "Vector-79_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-7",
+    "variants": [
+      {
+        "file": "Vector-7_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-7_v2.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-7_v3.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-7_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-80",
+    "variants": [
+      {
+        "file": "Vector-80_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-81",
+    "variants": [
+      {
+        "file": "Vector-81_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-82",
+    "variants": [
+      {
+        "file": "Vector-82_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-83",
+    "variants": [
+      {
+        "file": "Vector-83_v1.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-84",
+    "variants": [
+      {
+        "file": "Vector-84_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-85",
+    "variants": [
+      {
+        "file": "Vector-85_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-86",
+    "variants": [
+      {
+        "file": "Vector-86_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-87",
+    "variants": [
+      {
+        "file": "Vector-87_v1.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-88",
+    "variants": [
+      {
+        "file": "Vector-88_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-89",
+    "variants": [
+      {
+        "file": "Vector-89_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-8",
+    "variants": [
+      {
+        "file": "Vector-8_v1.svg",
+        "colors": [
+          "#FDCB00"
+        ]
+      },
+      {
+        "file": "Vector-8_v2.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      },
+      {
+        "file": "Vector-8_v3.svg",
+        "colors": [
+          "#3FA549"
+        ]
+      },
+      {
+        "file": "Vector-8_v4.svg",
+        "colors": [
+          "#FDE4CD"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-90",
+    "variants": [
+      {
+        "file": "Vector-90_v1.svg",
+        "colors": [
+          "#2D34FF"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector-9",
+    "variants": [
+      {
+        "file": "Vector-9_v1.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector-9_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector-9_v3.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector-9_v4.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "Vector",
+    "variants": [
+      {
+        "file": "Vector_v1.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      },
+      {
+        "file": "Vector_v2.svg",
+        "colors": [
+          "#FF4F4F"
+        ]
+      },
+      {
+        "file": "Vector_v3.svg",
+        "colors": [
+          "#EF97B9"
+        ]
+      },
+      {
+        "file": "Vector_v4.svg",
+        "colors": [
+          "#FF8000"
+        ]
+      }
+    ]
+  }
+]

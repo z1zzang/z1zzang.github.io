@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>HWPX 데코·배경 요소 — 수학 교재</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- 변환 상수 ----------
+     1mm = 4px (디스플레이용)
+     HWPX 변환 시: px / 4 = mm
+     -------------------------------- */
+  :root {
+    --mm: 4px;
+
+    /* 컨셉 색상 (수학 교재 톤) */
+    --accent:       #2453a8;
+    --accent-soft:  #d5e2f5;
+    --accent-line:  #1a3d80;
+    --ink:          #1a1a1a;
+    --paper:        #ffffff;
+    --muted:        #888888;
+
+    --ui-bg:    #f3efe6;
+    --ui-line:  #2a2a2a;
+    --ui-muted: #6b6b66;
+  }
+
+  /* 컨셉 프리셋 — 수학교재에 적합한 6가지 */
+  body[data-concept="navy"]    { --accent:#2453a8; --accent-soft:#d5e2f5; --accent-line:#1a3d80; } /* 클래식 네이비 */
+  body[data-concept="teal"]    { --accent:#1e7a85; --accent-soft:#c9e6e9; --accent-line:#155860; } /* 청록 */
+  body[data-concept="coral"]   { --accent:#d65a4a; --accent-soft:#fbdcd6; --accent-line:#9d3e32; } /* 코랄 */
+  body[data-concept="violet"]  { --accent:#6a4ca8; --accent-soft:#e2d8f3; --accent-line:#4a3580; } /* 보라 */
+  body[data-concept="forest"]  { --accent:#2f7a4a; --accent-soft:#cfe6d6; --accent-line:#1f5733; } /* 그린 */
+  body[data-concept="mono"]    { --accent:#222; --accent-soft:#dddddd; --accent-line:#000; }       /* 모노 */
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-line);
+    padding: 36px 44px 80px;
+  }
+
+  /* ---------- 상단 ---------- */
+  .topbar {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    border-bottom: 2px dashed var(--ui-line);
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+  }
+  .topbar h1 {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 44px; line-height: 1; margin: 0 0 4px; font-weight: 400;
+  }
+  .topbar .sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: var(--ui-muted);
+    letter-spacing: 0.02em;
+  }
+  .topbar .sub b { color: var(--ui-line); }
+
+  .concept-picker { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .concept-picker .lbl { font-family: 'Gaegu', cursive; font-size: 16px; margin-right: 4px; }
+  .swatch {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px 6px 8px; border: 1.5px solid var(--ui-line); background: #fff;
+    border-radius: 999px; font-family: 'Gaegu', cursive; font-size: 14px;
+    cursor: pointer; user-select: none; transition: transform .08s ease;
+  }
+  .swatch:hover { transform: translateY(-1px); }
+  .swatch.active { background: var(--ui-line); color: #fff; }
+  .swatch .dot { width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.25); }
+  .swatch[data-c="navy"]   .dot { background:#2453a8; }
+  .swatch[data-c="teal"]   .dot { background:#1e7a85; }
+  .swatch[data-c="coral"]  .dot { background:#d65a4a; }
+  .swatch[data-c="violet"] .dot { background:#6a4ca8; }
+  .swatch[data-c="forest"] .dot { background:#2f7a4a; }
+  .swatch[data-c="mono"]   .dot { background:#222; }
+
+  /* ---------- 섹션 헤더 ---------- */
+  section.size-block { margin-bottom: 56px; }
+  .size-head {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .size-head .num {
+    font-family: 'Nanum Pen Script', cursive; font-size: 38px;
+    background: var(--ui-line); color: #fff;
+    width: 46px; height: 46px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%; line-height: 1; padding-top: 4px;
+  }
+  .size-head .name { font-family: 'Nanum Pen Script', cursive; font-size: 32px; line-height: 1; }
+  .size-head .spec {
+    font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted);
+    border: 1px dashed var(--ui-line); padding: 4px 8px; background: #fff;
+  }
+  .size-head .spec b { color: var(--ui-line); }
+  .size-head .note { font-family: 'Gaegu', cursive; font-size: 15px; color: var(--ui-muted); }
+
+  /* ---------- 카드 ---------- */
+  .grid { display: grid; gap: 22px 18px; }
+  .grid.small  { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .grid.wide   { grid-template-columns: 1fr; }
+
+  .opt {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 14px 12px 12px;
+    background: var(--paper);
+    border: 1.5px solid var(--ui-line);
+    border-radius: 4px;
+    position: relative;
+  }
+  .opt .tag {
+    position: absolute; top: -10px; left: 10px;
+    background: var(--ui-bg); padding: 0 6px;
+    font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-line);
+  }
+  .opt .stage { display:flex; align-items:center; justify-content:center; min-height: 60px; }
+  .opt .meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Gaegu', cursive; font-size: 14px; color: var(--ui-muted);
+    border-top: 1px dashed var(--ui-muted); padding-top: 6px;
+  }
+  .opt .meta .id { color: var(--ui-line); font-weight: 700; }
+  .opt button.pick {
+    background: none; border: 1px solid var(--ui-line);
+    font-family: 'Gaegu', cursive; font-size: 13px;
+    padding: 2px 8px; cursor: pointer; border-radius: 3px;
+  }
+  .opt button.pick:hover { background: var(--ui-line); color:#fff; }
+
+  /* ============================================================
+     공통 사이즈 베이스
+  ============================================================ */
+  .deco-s    { width: calc(36.5 * var(--mm)); height: calc(11.5 * var(--mm)); position: relative; overflow:hidden; }
+  .deco-m10  { width: calc(105  * var(--mm)); height: calc(10   * var(--mm)); position:relative; overflow:hidden; }
+  .deco-m15  { width: calc(105  * var(--mm)); height: calc(15   * var(--mm)); position:relative; overflow:hidden; }
+  .deco-m20  { width: calc(105  * var(--mm)); height: calc(20   * var(--mm)); position:relative; overflow:hidden; }
+
+  /* ============================================================
+     SIZE 1 — 36.5 × 11.5 mm  (예제번호 / 유형라벨 / 난이도 등)
+  ============================================================ */
+
+  /* M-01 : 예제 번호 박스 (좌측 번호 + 라벨) */
+  .m01 { background: var(--paper); border:1.5px solid var(--accent-line); display:flex; }
+  .m01 .n { width: 38%; background: var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue'; font-size:22px; letter-spacing:.04em; }
+  .m01 .t { flex:1; display:flex; align-items:center; justify-content:center; color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size:13px; }
+
+  /* M-02 : 유형 라벨 (사선 컷) */
+  .m02 {
+    background: var(--accent);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    display:flex; align-items:center; padding-left: 12px;
+  }
+  .m02 b { color:#fff; font-family:'Noto Sans KR'; font-weight:700; font-size:13px; letter-spacing:.06em; }
+
+  /* M-03 : 개념정리 (좌측 막대 + 큰 텍스트) */
+  .m03 { background: var(--accent-soft); display:flex; align-items:center; }
+  .m03 .bar { width: 8px; background: var(--accent); height:100%; }
+  .m03 b { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:900; font-size:14px; margin-left: 10px; }
+
+  /* M-04 : 난이도 별 (★★★) */
+  .m04 { background: var(--paper); border: 1.5px solid var(--accent-line); display:flex; align-items:center; justify-content:space-between; padding: 0 10px; }
+  .m04 .lv { font-family: 'Noto Sans KR'; font-weight:700; font-size: 12px; color: var(--accent-line); }
+  .m04 .stars { color: var(--accent); font-size: 14px; letter-spacing: 1px; }
+  .m04 .stars .off { color: var(--accent-soft); }
+
+  /* M-05 : 모눈 배경 + 중앙 텍스트 */
+  .m05 {
+    background:
+      linear-gradient(var(--accent-soft) 1px, transparent 1px) 0 0/8px 8px,
+      linear-gradient(90deg, var(--accent-soft) 1px, transparent 1px) 0 0/8px 8px,
+      var(--paper);
+    border: 1px solid var(--accent-line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .m05 b { background: var(--paper); padding: 2px 8px; color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size:12px; }
+
+  /* M-06 : Tip 말풍선 */
+  .m06 { background: var(--accent); display:flex; align-items:center; padding: 0 12px; position:relative; }
+  .m06::after {
+    content:""; position:absolute; left: 14px; bottom: -6px;
+    width:0; height:0;
+    border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid var(--accent);
+  }
+  .m06 b { color:#fff; font-family:'Noto Sans KR'; font-weight:900; font-size:13px; letter-spacing:.04em; }
+  .m06 small { color: var(--accent-soft); margin-left: 6px; font-family:'Noto Sans KR'; font-size: 10px; }
+
+  /* M-07 : 대괄호 강조 [    ] */
+  .m07 { background: var(--paper); display:flex; align-items:center; justify-content:center; position:relative; }
+  .m07::before, .m07::after {
+    content:""; position:absolute; top:6px; bottom:6px; width:10px;
+    border: 2.5px solid var(--accent-line);
+  }
+  .m07::before { left:4px; border-right:none; }
+  .m07::after  { right:4px; border-left:none; }
+  .m07 b { color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size:13px; letter-spacing:.06em; }
+
+  /* M-08 : 정답 도장 (원형 + 텍스트) */
+  .m08 { background: var(--paper); border: 1.5px dashed var(--accent); display:flex; align-items:center; padding: 0 8px; gap: 8px; }
+  .m08 .circ {
+    width: 28px; height: 28px; border-radius:50%;
+    background: var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue'; font-size:16px;
+  }
+  .m08 b { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size: 13px; }
+
+  /* M-09 : 단계 (STEP 화살표) */
+  .m09 { background: var(--accent-soft); display:flex; align-items:center; }
+  .m09 .step {
+    background: var(--accent); color: #fff;
+    padding: 0 14px 0 8px;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+    display:flex; align-items:center; height:100%;
+    font-family:'Bebas Neue'; font-size: 14px; letter-spacing: .04em;
+  }
+  .m09 .t { flex:1; display:flex; align-items:center; justify-content:center; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size: 12px; }
+
+  /* M-10 : 수식 아이콘 ∑ ∫ */
+  .m10 { background: var(--paper); border: 1.5px solid var(--accent-line); display:flex; align-items:center; padding: 0 10px; gap: 8px; }
+  .m10 .sym {
+    font-family: 'Times New Roman', serif; font-size: 22px; line-height:1;
+    color: var(--accent); font-weight: 700; font-style: italic;
+  }
+  .m10 b { color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; font-size:13px; }
+
+  /* M-11 : 좌측 챕터넘버 (큰 숫자) */
+  .m11 { background: var(--paper); display:flex; align-items:center; gap: 8px; padding: 0 6px; border-bottom: 2px solid var(--accent); }
+  .m11 .big {
+    font-family:'Bebas Neue'; font-size: 32px; color: var(--accent);
+    line-height: 1;
+  }
+  .m11 b { font-family:'Noto Sans KR'; font-weight:700; font-size: 12px; color: var(--accent-line); }
+
+  /* M-12 : 형광펜 하이라이트 */
+  .m12 { background: var(--paper); display:flex; align-items:center; justify-content:center; position:relative; padding: 0 12px; }
+  .m12 .hl {
+    background: linear-gradient(transparent 55%, var(--accent-soft) 55% 92%, transparent 92%);
+    padding: 0 4px;
+    color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:900; font-size:14px;
+  }
+
+
+  /* ============================================================
+     SIZE 2-4 SET — 105 × 10/15/20 mm  (배경/데코 세트)
+  ============================================================ */
+
+  /* SET A — 예제/유형 헤더 (좌측 컬러블록 + 번호) */
+  .setA { background: var(--paper); border: 1.5px solid var(--accent-line); display:flex; align-items:stretch; }
+  .setA .blk { background: var(--accent); color: #fff; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 0 14px; }
+  .setA .blk .kind { font-family:'Noto Sans KR'; font-weight: 700; letter-spacing: .04em; }
+  .setA .blk .no { font-family:'Bebas Neue'; line-height: 1; letter-spacing: .02em; }
+  .setA .body { flex:1; display:flex; align-items:center; padding: 0 14px; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setA .body .ttl { font-weight: 900; }
+  .setA .body .sub { display:none; }
+  .deco-m10.setA .blk .kind { font-size: 11px; }
+  .deco-m10.setA .blk .no   { font-size: 18px; margin-top: 1px; }
+  .deco-m10.setA .body .ttl { font-size: 13px; }
+  .deco-m15.setA .blk .kind { font-size: 12px; }
+  .deco-m15.setA .blk .no   { font-size: 24px; margin-top: 2px; }
+  .deco-m15.setA .body .ttl { font-size: 15px; }
+  .deco-m15.setA .body .sub { display:block; font-size:11px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setA .blk .kind { font-size: 13px; }
+  .deco-m20.setA .blk .no   { font-size: 30px; margin-top: 2px; }
+  .deco-m20.setA .body .ttl { font-size: 17px; }
+  .deco-m20.setA .body .sub { display:block; font-size:12px; font-weight: 400; color: var(--muted); margin-top: 3px; }
+
+  /* SET B — 개념정리 박스 (소프트 백 + 좌측 두꺼운 막대) */
+  .setB { background: var(--accent-soft); display:flex; align-items:center; border-left: 6px solid var(--accent); }
+  .setB .icon {
+    width: 22px; height: 22px; margin: 0 10px 0 12px;
+    background: var(--accent); color:#fff; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue'; font-size: 13px;
+  }
+  .setB .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setB .body .ttl { font-weight: 900; }
+  .setB .body .sub { display:none; }
+  .deco-m10.setB .body .ttl { font-size: 13px; }
+  .deco-m15.setB .body .ttl { font-size: 15px; }
+  .deco-m15.setB .body .sub { display:block; font-size: 11px; font-weight: 400; color: var(--accent-line); opacity:.75; margin-top: 2px; }
+  .deco-m20.setB .body .ttl { font-size: 16px; }
+  .deco-m20.setB .body .sub { display:block; font-size: 12px; font-weight: 400; color: var(--accent-line); opacity:.75; margin-top: 3px; }
+  .deco-m20.setB .icon { width: 28px; height: 28px; font-size: 16px; }
+
+  /* SET C — 더블 더블라인 (위·아래 + 좌측 미니 라벨) */
+  .setC { background: var(--paper); position:relative; display:flex; align-items:center; padding: 0 16px; }
+  .setC::before, .setC::after { content:""; position:absolute; left:0; right:0; background: var(--accent); }
+  .setC::before { top: 0; height: 2.5px; }
+  .setC::after  { top: 5px; height: 1px; }
+  .setC .label {
+    background: var(--accent); color: #fff;
+    padding: 2px 8px; font-family:'Noto Sans KR'; font-weight: 700; letter-spacing: .04em;
+    margin-right: 12px; font-size: 11px;
+  }
+  .setC .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 900; }
+  .setC .body .sub { display:none; }
+  .deco-m10.setC .body { font-size: 13px; }
+  .deco-m15.setC .body { font-size: 15px; }
+  .deco-m15.setC .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setC .body { font-size: 17px; }
+  .deco-m20.setC .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SET D — 모눈종이 배경 + 외곽선 */
+  .setD {
+    background:
+      linear-gradient(var(--accent-soft) 1px, transparent 1px) 0 0/10px 10px,
+      linear-gradient(90deg, var(--accent-soft) 1px, transparent 1px) 0 0/10px 10px,
+      var(--paper);
+    border: 1.5px solid var(--accent-line);
+    display:flex; align-items:center; padding: 0 14px;
+  }
+  .setD .chip {
+    background: var(--paper); color: var(--accent);
+    padding: 3px 8px; font-family:'Noto Sans KR'; font-weight: 900;
+    border: 1.5px solid var(--accent); margin-right: 10px; font-size: 11px;
+  }
+  .setD .body { background: var(--paper); padding: 2px 8px; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setD .body .sub { display:none; }
+  .deco-m10.setD .body { font-size: 13px; }
+  .deco-m15.setD .body { font-size: 14px; }
+  .deco-m15.setD .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setD .body { font-size: 16px; }
+  .deco-m20.setD .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SET E — 풀이/Step 헤더 (스텝 화살표) */
+  .setE { background: var(--accent-soft); display:flex; align-items:center; }
+  .setE .step {
+    background: var(--accent); color:#fff;
+    padding: 0 22px 0 14px;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+    display:flex; flex-direction:column; align-items:flex-start; justify-content:center; height:100%;
+    font-family:'Noto Sans KR'; font-weight: 700;
+  }
+  .setE .step .lbl { font-family:'Bebas Neue'; letter-spacing: .04em; opacity:.85; }
+  .setE .step .no  { font-family:'Bebas Neue'; line-height:1; }
+  .setE .body { flex:1; display:flex; align-items:center; padding: 0 18px; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setE .body .ttl { font-weight: 900; }
+  .setE .body .sub { display:none; }
+  .deco-m10.setE .step .lbl { font-size: 10px; }
+  .deco-m10.setE .step .no  { font-size: 14px; }
+  .deco-m10.setE .body .ttl { font-size: 13px; }
+  .deco-m15.setE .step .lbl { font-size: 11px; }
+  .deco-m15.setE .step .no  { font-size: 20px; }
+  .deco-m15.setE .body .ttl { font-size: 14px; }
+  .deco-m15.setE .body .sub { display:block; font-size: 11px; font-weight: 400; color: var(--accent-line); opacity:.75; margin-top: 2px; }
+  .deco-m20.setE .step .lbl { font-size: 12px; }
+  .deco-m20.setE .step .no  { font-size: 26px; }
+  .deco-m20.setE .body .ttl { font-size: 16px; }
+  .deco-m20.setE .body .sub { display:block; font-size: 12px; font-weight: 400; color: var(--accent-line); opacity:.75; margin-top: 3px; }
+
+  /* SET F — 노트/Tip 박스 (코너컷 + 점선 외곽) */
+  .setF {
+    background: var(--paper); border: 1.5px dashed var(--accent);
+    display:flex; align-items:center; padding: 0 12px;
+    position: relative;
+  }
+  .setF::before {
+    content:""; position:absolute; top:0; left:0;
+    border-style: solid;
+    border-width: 0 0 14px 14px;
+    border-color: transparent transparent var(--accent) transparent;
+  }
+  .setF .chip {
+    background: var(--accent); color:#fff;
+    padding: 3px 10px; font-family:'Noto Sans KR'; font-weight: 700; letter-spacing: .06em;
+    margin-right: 12px; font-size: 11px;
+  }
+  .setF .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setF .body .sub { display:none; }
+  .deco-m10.setF .body { font-size: 13px; }
+  .deco-m15.setF .body { font-size: 14px; }
+  .deco-m15.setF .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setF .body { font-size: 15px; }
+  .deco-m20.setF .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SET G — 챕터 헤더 (큰 챕터넘버 + 타이틀) */
+  .setG { background: var(--paper); display:flex; align-items:center; border-bottom: 2.5px solid var(--accent); padding: 0 6px; gap: 12px; }
+  .setG .ch {
+    font-family:'Bebas Neue'; color: var(--accent); line-height: 1;
+    border-right: 1.5px solid var(--accent-soft);
+    padding-right: 12px;
+  }
+  .setG .ch small { display:block; font-family:'Noto Sans KR'; font-weight: 700; font-size: 9px; color: var(--accent); letter-spacing: .12em; margin-bottom: 1px; }
+  .setG .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 900; }
+  .setG .body .sub { display:none; }
+  .deco-m10.setG .ch { font-size: 22px; }
+  .deco-m10.setG .body { font-size: 13px; }
+  .deco-m15.setG .ch { font-size: 32px; }
+  .deco-m15.setG .body { font-size: 15px; }
+  .deco-m15.setG .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setG .ch { font-size: 42px; }
+  .deco-m20.setG .body { font-size: 17px; }
+  .deco-m20.setG .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SET H — 풀이단계 (좌측 원형 step + 점선) */
+  .setH { background: var(--paper); display:flex; align-items:center; padding: 0 14px; position:relative; }
+  .setH::after {
+    content:""; position:absolute; bottom: 0; left: 0; right: 0;
+    border-bottom: 1.5px dashed var(--accent);
+  }
+  .setH .circ {
+    background: var(--accent); color:#fff; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-family:'Bebas Neue'; line-height:1; margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .setH .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 700; }
+  .setH .body .sub { display:none; }
+  .deco-m10.setH .circ { width: 22px; height: 22px; font-size: 13px; }
+  .deco-m10.setH .body { font-size: 13px; }
+  .deco-m15.setH .circ { width: 30px; height: 30px; font-size: 17px; }
+  .deco-m15.setH .body { font-size: 14px; }
+  .deco-m15.setH .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m20.setH .circ { width: 38px; height: 38px; font-size: 21px; }
+  .deco-m20.setH .body { font-size: 16px; }
+  .deco-m20.setH .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* SET I — 수식 기호 백 + 좌측 라벨 */
+  .setI {
+    background: var(--paper); border: 1.5px solid var(--accent-line);
+    display:flex; align-items:stretch; position: relative; overflow: hidden;
+  }
+  .setI::after {
+    content:"∑"; position:absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-family: 'Times New Roman', serif; font-style: italic;
+    color: var(--accent-soft); font-weight: 700; line-height: 1;
+    pointer-events: none;
+  }
+  .setI .label { background: var(--accent-line); color:#fff; display:flex; align-items:center; padding: 0 14px; font-family:'Noto Sans KR'; font-weight: 700; letter-spacing: .06em; }
+  .setI .body { flex:1; display:flex; align-items:center; padding: 0 16px; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 900; z-index: 1; }
+  .setI .body .sub { display:none; }
+  .deco-m10.setI .label { font-size: 11px; }
+  .deco-m10.setI .body  { font-size: 13px; }
+  .deco-m10.setI::after { font-size: 32px; }
+  .deco-m15.setI .label { font-size: 12px; }
+  .deco-m15.setI .body  { font-size: 15px; }
+  .deco-m15.setI .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deco-m15.setI::after { font-size: 48px; }
+  .deco-m20.setI .label { font-size: 13px; }
+  .deco-m20.setI .body  { font-size: 17px; }
+  .deco-m20.setI .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .deco-m20.setI::after { font-size: 64px; }
+
+  /* SET J — 형광펜 강조 */
+  .setJ { background: var(--paper); display:flex; align-items:center; padding: 0 12px; }
+  .setJ .body {
+    color: var(--accent-line); font-family:'Noto Sans KR'; font-weight: 900;
+    background: linear-gradient(transparent 50%, var(--accent-soft) 50% 88%, transparent 88%);
+    padding: 0 6px;
+  }
+  .setJ .badge {
+    margin-right: 10px;
+    background: var(--accent); color: #fff;
+    width: 22px; height: 22px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family:'Bebas Neue'; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .setJ .body .sub { display:none; }
+  .deco-m10.setJ .body { font-size: 13px; }
+  .deco-m10.setJ .badge { width: 20px; height: 20px; font-size: 12px; }
+  .deco-m15.setJ .body { font-size: 15px; }
+  .deco-m15.setJ .badge { width: 26px; height: 26px; font-size: 15px; }
+  .deco-m15.setJ .body .sub { display:block; font-weight: 400; font-size: 11px; color: var(--muted); margin-top: 2px; background: transparent; padding: 0; }
+  .deco-m20.setJ .body { font-size: 16px; }
+  .deco-m20.setJ .badge { width: 32px; height: 32px; font-size: 18px; }
+  .deco-m20.setJ .body .sub { display:block; font-weight: 400; font-size: 12px; color: var(--muted); margin-top: 3px; background: transparent; padding: 0; }
+
+  /* ============== 세트 행 표현 ============== */
+  .set-label {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 24px; margin-top: 8px; color: var(--ui-line);
+  }
+  .set-label::after { content:""; flex:1; height: 0; border-top: 1.5px dashed var(--ui-muted); }
+  .set-label .pill {
+    background: var(--ui-line); color:#fff;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .set-row { display:flex; flex-direction:column; gap:10px; }
+  .set-row .row {
+    display:flex; align-items:center; gap:10px;
+    background: var(--paper); border: 1.5px solid var(--ui-line); padding: 10px;
+    border-radius: 4px;
+  }
+  .set-row .row .label {
+    width: 70px; flex-shrink: 0;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--ui-muted);
+  }
+  .set-row .row .label b { color: var(--ui-line); display:block; }
+  .set-row .row .stage { flex:1; min-width: 0; }
+  .set-row .actions { display:flex; gap: 8px; justify-content: flex-end; }
+  .set-row .actions button {
+    background: none; border: 1px solid var(--ui-line);
+    font-family: 'Gaegu', cursive; font-size: 13px;
+    padding: 3px 10px; cursor: pointer; border-radius: 3px;
+  }
+  .set-row .actions button:hover { background: var(--ui-line); color:#fff; }
+
+  /* 푸터 */
+  .footnote {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1.5px dashed var(--ui-line);
+    font-family: 'Gaegu', cursive; font-size: 14px;
+    color: var(--ui-muted); line-height: 1.6;
+  }
+  .footnote code {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    background: #fff; border: 1px dashed var(--ui-line); padding: 1px 5px;
+  }
+  .footnote b { color: var(--ui-line); }
+
+  /* 토스트 */
+  #toast {
+    position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px);
+    background: var(--ui-line); color: #fff;
+    font-family: 'Gaegu', cursive; font-size: 14px;
+    padding: 8px 16px; border-radius: 999px;
+    opacity: 0; transition: opacity .2s, transform .2s;
+    pointer-events: none; z-index: 100;
+  }
+  #toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body data-concept="navy">
+
+<!-- ============== TOP ============== -->
+<div class="topbar">
+  <div>
+    <h1>HWPX 데코·배경 요소 — 중·고등 수학 교재</h1>
+    <div class="sub">
+      변환비 <b>1mm = 4px</b> · 컨셉 컬러는 <b>CSS 변수</b> 기반 ·
+      교재 어휘 (예제 / 유형 / 개념 / Step / Tip / 난이도) 반영
+    </div>
+  </div>
+  <div class="concept-picker">
+    <span class="lbl">컨셉 색상:</span>
+    <button class="swatch active" data-c="navy"><span class="dot"></span>네이비</button>
+    <button class="swatch" data-c="teal"><span class="dot"></span>틸</button>
+    <button class="swatch" data-c="coral"><span class="dot"></span>코랄</button>
+    <button class="swatch" data-c="violet"><span class="dot"></span>바이올렛</button>
+    <button class="swatch" data-c="forest"><span class="dot"></span>그린</button>
+    <button class="swatch" data-c="mono"><span class="dot"></span>모노</button>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SIZE 1 — 36.5 × 11.5 mm
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">1</span>
+    <span class="name">데코 요소</span>
+    <span class="spec"><b>36.5 × 11.5 mm</b> · 146 × 46 px</span>
+    <span class="note">— 예제 번호 / 유형 라벨 / 난이도 / Tip 배지 등</span>
+  </div>
+
+  <div class="grid small">
+
+    <div class="opt">
+      <span class="tag">M-01</span>
+      <div class="stage"><div class="deco-s m01" data-kit="deco-base-example" data-slot="grp1" data-kit-fit="actual"><div class="n">  </div><div class="t">　　　　　　</div></div></div>
+      <div class="meta"><span class="id">example-no</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-02</span>
+      <div class="stage"><div class="deco-s m02" data-kit="deco-base-type" data-slot="grp1" data-kit-fit="actual-left"><b>　　　　</b></div></div>
+      <div class="meta"><span class="id">type-tag</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-05</span>
+      <div class="stage"><div class="deco-s m05" data-kit="deco-base-grid" data-slot="grp1" data-kit-fit="actual"><b>　　　　　　　　　</b></div></div>
+      <div class="meta"><span class="id">grid-bg</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-06</span>
+      <div class="stage"><div class="deco-s m06" data-kit="deco-base-tip" data-slot="Memo2" data-kit-fit="actual"><b>check Point!</b><small> </small></div></div>
+      <div class="meta"><span class="id">tip-pop</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-07</span>
+      <div class="stage"><div class="deco-s m07" data-kit="deco-base-formula" data-slot="grp1" data-kit-fit="actual"><b> </b></div></div>
+      <div class="meta"><span class="id">brackets</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-08</span>
+      <div class="stage"><div class="deco-s m08" data-kit="deco-base-answer" data-slot="grp1" data-kit-fit="actual-left"><div class="circ">🍀</div><b> </b></div></div>
+      <div class="meta"><span class="id">answer-stamp</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-09</span>
+      <div class="stage"><div class="deco-s m09" data-kit="deco-base-step" data-slot="grp1, Memo2" data-kit-fit="actual-left"><div class="step">*</div><div class="t">　　　　</div></div></div>
+      <div class="meta"><span class="id">step-arrow</span><button class="pick">선택</button></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">M-12</span>
+      <div class="stage"><div class="deco-s m12" data-kit="deco-base-highlight" data-slot="grp1, Memo2, grp0" data-kit-fit="actual"><span class="hl">　　　　　　　　</span></div></div>
+      <div class="meta"><span class="id">highlighter</span><button class="pick">선택</button></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SIZE 2-4 SET — 105 × 10/15/20 mm
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">2</span>
+    <span class="name">배경 · 데코 세트</span>
+    <span class="spec"><b>105 × 10 / 15 / 20 mm</b> · 420 × 40 / 60 / 80 px</span>
+    <span class="note">— 한 시각언어를 3가지 높이로 변주. 예제·개념·Step 등 교재 요소에 맞춰 디자인.</span>
+  </div>
+
+  <div class="grid wide">
+
+    <!-- SET A : 예제 헤더 -->
+    <div class="set-label"><span class="pill">SET A</span> 예제·유형 헤더 (좌측 컬러블록 + 번호)</div>
+    <div class="opt">
+      <span class="tag">A · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setA" data-kit="sell-example10" data-slot="source" data-kit-fit="fill"><div class="blk"><div class="kind">　　　　</div><div class="no"></div></div><div class="body"><div class="ttl"></div></div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setA" data-kit="sell-example15" data-slot="grp0" data-kit-fit="fill"><div class="blk"><div class="kind">　　　　</div><div class="no"></div></div><div class="body"><div><div class="ttl"></div><div class="sub">　　　　</div></div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setA" data-kit="sell-example20" data-slot="Memo2" data-kit-fit="fill"><div class="blk"><div class="kind">　　　　</div><div class="no"></div></div><div class="body"><div><div class="ttl">　　　　　　　　</div><div class="sub">　　　　</div></div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setA · example-header</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET B : 개념정리 -->
+    <div class="set-label"><span class="pill">SET B</span> 개념정리 박스 (소프트백 + 좌측 막대)</div>
+    <div class="opt">
+      <span class="tag">B · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setB" data-kit="sell-soft-concept10" data-slot="source" data-kit-fit="fill"><div class="icon"></div><div class="body"><div class="ttl">　　　　</div></div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setB" data-kit="sell-soft-concept15" data-slot="grp0" data-kit-fit="fill"><div class="icon"></div><div class="body"><div class="ttl">　　　　</div><div class="sub">　　　　</div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setB" data-kit="sell-soft-concept20" data-slot="Memo2" data-kit-fit="fill"><div class="icon"></div><div class="body"><div class="ttl">　　　　</div><div class="sub">　　　　</div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setB · concept-box</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET C : 더블 더블라인 -->
+    <div class="set-label"><span class="pill">SET C</span> 더블 더블라인 + 라벨</div>
+    <div class="opt">
+      <span class="tag">C · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setC" data-kit="sell-double-line10" data-slot="source" data-kit-fit="fill"><div class="label">　　　　</div><div class="body">　　　　</div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setC" data-kit="sell-double-line15" data-slot="grp0" data-kit-fit="fill"><div class="label">　　　　</div><div class="body">　　　　<div class="sub">　　　　</div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setC" data-kit="sell-double-line20" data-slot="Memo2" data-kit-fit="fill"><div class="label">　　　　</div><div class="body">　　　　<div class="sub">　　　　</div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setC · double-line-label</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET D : 모눈배경 -->
+    <div class="set-label"><span class="pill">SET D</span> 모눈종이 배경 + 외곽선</div>
+    <div class="opt">
+      <span class="tag">D · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setD" data-kit="sell-grid-paper10" data-slot="source" data-kit-fit="actual"><div class="chip">Source</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　　　</div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setD" data-kit="sell-grid-paper15" data-slot="grp0" data-kit-fit="actual"><div class="chip">Depth</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　<div class="sub">　　　　　　　　　　　　　　　　　　　　　　</div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setD" data-kit="sell-grid-paper20" data-slot="Memo2" data-kit-fit="actual"><div class="chip">Memo</div><div class="body">　　　　　　　　　　　　　　　　　　　<div class="sub">　　　　　　　　　　　　　　　　　　　　</div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setD · grid-paper</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET E : Step -->
+    <div class="set-label"><span class="pill">SET E</span> 풀이 Step (화살표)</div>
+    <div class="opt">
+      <span class="tag">E · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setE" data-kit="sell-step-arrow10" data-slot="source" data-kit-fit="actual"><div class="step"><div class="lbl">　　</div><div class="no">　　</div></div><div class="body"><div class="ttl"></div></div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setE" data-kit="sell-step-arrow15" data-slot="grp0" data-kit-fit="actual"><div class="step"><div class="lbl">　　</div><div class="no">　　</div></div><div class="body"><div><div class="ttl"></div><div class="sub"></div></div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setE" data-kit="sell-step-arrow20" data-slot="Memo2" data-kit-fit="actual"><div class="step"><div class="lbl">　　</div><div class="no">　　</div></div><div class="body"><div><div class="ttl"></div><div class="sub"></div></div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setE · step-arrow</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET F : Tip 박스 -->
+    <div class="set-label"><span class="pill">SET F</span> Tip 노트 (점선 + 코너 컷)</div>
+    <div class="opt">
+      <span class="tag">F · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setF" data-kit="sell-tip-note10" data-slot="source" data-kit-fit="actual"><div class="chip">출처</div><div class="body">　　</div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setF" data-kit="sell-tip-note15" data-slot="grp0" data-kit-fit="actual"><div class="chip">유형</div><div class="body">　　</div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setF" data-kit="sell-tip-note20" data-slot="Memo2" data-kit-fit="actual"><div class="chip">메모</div><div class="body">　　</div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setF · tip-note</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET H : 풀이단계 -->
+    <div class="set-label"><span class="pill">SET H</span> 풀이단계 (원형 step + 점선)</div>
+    <div class="opt">
+      <span class="tag">H · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setH" data-kit="sell-solution-step10" data-slot="source, title-1" data-kit-fit="fill"><div class="circ"> </div><div class="body">　　</div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setH" data-kit="sell-solution-step15" data-slot="grp0" data-kit-fit="fill"><div class="circ"> </div><div class="body">　　<div class="sub"></div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setH" data-kit="sell-solution-step20" data-slot="Memo2" data-kit-fit="fill"><div class="circ"> </div><div class="body">　　<div class="sub"></div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setH · solution-step</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET J : 형광펜 -->
+    <div class="set-label"><span class="pill">SET J</span> 형광펜 강조 + 배지</div>
+    <div class="opt">
+      <span class="tag">J · 10/15/20</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setJ" data-kit="sell-highlight10" data-slot="source, title-1" data-kit-fit="fill"><div class="badge">:)</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　　　　　</div></div></div></div>
+        <div class="row"><div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setJ" data-kit="sell-highlight15" data-slot="grp0" data-kit-fit="fill"><div class="badge">:)</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　<div class="sub">　　　　　　</div></div></div></div></div>
+        <div class="row"><div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setJ" data-kit="sell-highlight20" data-slot="Memo2" data-kit-fit="fill"><div class="badge">:)</div><div class="body">　　　　　　　　　　　　<div class="sub"></div></div></div></div></div>
+      </div>
+      <div class="meta"><span class="id">setJ · highlighter</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============== FOOTNOTE ============== -->
+<div class="footnote">
+  ✏️ <b>수학 교재 가이드</b><br/>
+  · 디스플레이 비율 <code>1mm = 4px</code> · HWPX 변환 시 그대로 환산<br/>
+  · 모든 요소는 <code>--accent</code>, <code>--accent-soft</code>, <code>--accent-line</code>, <code>--paper</code> 4개 변수만 참조 — 교재 컨셉/학년/단원별 컬러 차등 적용 용이<br/>
+  · 사이즈 1 옵션 12종: <b>예제번호 / 유형 / 개념 / 난이도 / 모눈 / Tip / 대괄호 / 정답 / Step / 수식기호 / 챕터넘버 / 형광펜</b><br/>
+  · 사이즈 2–4 세트 10종 (A–J): <b>예제헤더 / 개념정리 / 더블라인 / 모눈배경 / Step / Tip노트 / 단원헤더 / 풀이단계 / 수식워터마크 / 형광펜</b> — 각 세트가 10/15/20mm 세 높이로 일관되게 변주
+</div>
+
+<div id="toast"></div>
+
+<script>
+  document.querySelectorAll('.swatch').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.body.dataset.concept = b.dataset.c;
+    });
+  });
+
+  const toast = document.getElementById('toast');
+  let t;
+  document.querySelectorAll('button.pick').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.target.closest('.opt');
+      const id = card.querySelector('.id')?.textContent || 'item';
+      const label = e.target.textContent.trim();
+      toast.textContent = `[${id}] ${label} ✓`;
+      toast.classList.add('show');
+      clearTimeout(t);
+      t = setTimeout(() => toast.classList.remove('show'), 1400);
+    });
+  });
+</script>
+</body>
+</html>

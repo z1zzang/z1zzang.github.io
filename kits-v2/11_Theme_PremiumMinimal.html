@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>Theme 10 — Premium Minimal 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- 변환 상수 : 1mm = 4px (HWPX 변환 시 px/4 = mm) ----------
+     Theme 10 Premium Minimal — 극단적 미니멀: 화이트 기반, 얇은 선, 정교한 여백.
+     화려한 면 배경 금지 · 솔리드 채움 최소화 · 얇은 라인과 작은 포인트만 사용.
+     모든 요소는 CSS 변수(--accent / --accent-soft / --accent-line / --paper / --ink)만 참조.
+     -------------------------------------------------------------------- */
+  :root {
+    --mm: 4px;
+    --accent:       #1f2a3d;   /* rasterizer 가 사용자 accent 로 주입 */
+    --accent-soft:  #d9dee6;
+    --accent-line:  #1f2a3d;
+    --ink:          #1a1a1a;
+    --paper:        #ffffff;
+    --muted:        #9a9a9a;
+
+    /* 와이어프레임 UI 색 (컨셉 무관) */
+    --ui-bg:    #f6f6f4;
+    --ui-line:  #2a2a2a;
+    --ui-muted: #777;
+  }
+  body[data-concept="mono"]   { --accent:#222;    --accent-soft:#e0e0e0; --accent-line:#222; }
+  body[data-concept="navy"]   { --accent:#1f2a3d; --accent-soft:#d6dce6; --accent-line:#141d2c; }
+  body[data-concept="warm"]   { --accent:#7a6a3d; --accent-soft:#ece3cf; --accent-line:#544826; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--ui-bg); color: var(--ui-line); padding: 36px 44px 80px; }
+
+  .topbar { border-bottom: 1px solid var(--ui-line); padding-bottom: 14px; margin-bottom: 28px; }
+  .topbar h1 { font-size: 22px; font-weight: 700; margin: 0 0 4px; letter-spacing: .02em; }
+  .topbar .sub { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); }
+
+  section.size-block { margin-bottom: 48px; }
+  .size-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .size-head .name { font-size: 18px; font-weight: 700; }
+  .size-head .spec { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); border: 1px solid var(--ui-line); padding: 3px 7px; }
+
+  .grid { display: grid; gap: 18px; }
+  .grid.wide { grid-template-columns: 1fr; }
+  .opt { padding: 16px 14px 12px; background: var(--paper); border: 1px solid var(--ui-line); position: relative; }
+  .opt .tag { position: absolute; top: -10px; left: 10px; background: var(--ui-bg); padding: 0 6px; font-family: 'Space Mono', monospace; font-size: 11px; }
+  .opt .stage { display: flex; align-items: center; justify-content: flex-start; min-height: 56px; }
+  .opt .meta { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--ui-muted); font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-muted); }
+  .opt .meta b { color: var(--ui-line); }
+
+  /* ---------- 사이즈 베이스 (105 × 10|15|20 mm) ---------- */
+  .deco-m10 { width: calc(105 * var(--mm)); height: calc(10 * var(--mm)); position: relative; overflow: hidden; }
+  .deco-m15 { width: calc(105 * var(--mm)); height: calc(15 * var(--mm)); position: relative; overflow: hidden; }
+  .deco-m20 { width: calc(105 * var(--mm)); height: calc(20 * var(--mm)); position: relative; overflow: hidden; }
+
+  /* ============================================================
+     PM 미니멀 variant — 얇은 선/작은 포인트 중심, 솔리드 면 최소화
+     ============================================================ */
+
+  /* PM-A : 상단 헤어라인 + 하단 페일라인 (헤더/Grp0 용) */
+  .pmA { background: var(--paper); display: flex; align-items: center; padding: 0 12px; }
+  .pmA::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: var(--accent); }
+  .pmA::after  { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: .5px; background: var(--accent-soft); }
+  .pmA .lbl { color: var(--accent); font-weight: 700; letter-spacing: .2em; text-transform: uppercase; font-size: 15px; }
+
+  /* PM-B : 단일 하단 룰 + 좌측 텍스트 (Grp3/Grp4 용) */
+  .pmB { background: var(--paper); display: flex; align-items: center; padding: 0 10px; border-bottom: 1px solid var(--accent-line); }
+  .pmB .lbl { color: var(--accent-line); font-weight: 600; letter-spacing: .08em; }
+  .deco-m10 .pmB .lbl, .deco-m10.pmB .lbl { font-size: 13px; }
+  .deco-m15 .pmB .lbl, .deco-m15.pmB .lbl { font-size: 14px; }
+
+  /* PM-C : 얇은 좌측 세로 룰 + 본문 (Memo2 용) */
+  .pmC { background: var(--paper); display: flex; align-items: stretch; }
+  .pmC .rule { width: 2px; background: var(--accent); flex-shrink: 0; }
+  .pmC .tx { flex: 1; display: flex; align-items: center; padding: 0 12px; color: var(--ink); font-weight: 500; font-size: 13px; }
+
+  /* PM-D : 작은 도트 + 페일 베이스라인 (Level 용) */
+  .pmD { background: var(--paper); display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+  .pmD::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 6px; height: 1px; background: var(--accent-soft); }
+  .pmD .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .pmD .lbl { color: var(--accent); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+
+  /* PM-E : 중앙 텍스트 + 풀폭 하단 헤어라인 (Source 용) */
+  .pmE { background: var(--paper); display: flex; align-items: center; justify-content: center; }
+  .pmE::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--accent); }
+  .pmE .lbl { color: var(--accent-line); font-weight: 600; letter-spacing: .1em; font-size: 12px; }
+</style>
+</head>
+<body data-concept="navy">
+
+<div class="topbar">
+  <h1>Theme 10 — Premium Minimal</h1>
+  <div class="sub">series=<b>premium-minimal</b> · 1mm = 4px · 얇은 선·작은 포인트만 · 모든 색은 var(--accent…) 참조</div>
+</div>
+
+<section class="size-block">
+  <div class="size-head">
+    <span class="name">본문 미니멀 슬롯 세트</span>
+    <span class="spec">105 × 10 / 15 / 20 mm</span>
+  </div>
+
+  <div class="grid wide">
+
+    <div class="opt">
+      <span class="tag">PM-A · Grp0 · 20mm</span>
+      <div class="stage">
+        <div class="deco-m20 pmA" data-kit="pm-rule-head" data-slot="Grp0" data-kit-fit="actual" data-series="premium-minimal">
+          <span class="lbl">@Grp0@</span>
+        </div>
+      </div>
+      <div class="meta"><b>pm-rule-head</b> — 상단 헤어라인 + 하단 페일라인</div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">PM-B · Grp3 · 10mm</span>
+      <div class="stage">
+        <div class="deco-m10 pmB" data-kit="pm-hairline10" data-slot="Grp3" data-kit-fit="actual" data-series="premium-minimal">
+          <span class="lbl">@Grp3@</span>
+        </div>
+      </div>
+      <div class="meta"><b>pm-hairline10</b> — 단일 하단 룰 + 좌측 텍스트</div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">PM-B · Grp4 · 15mm</span>
+      <div class="stage">
+        <div class="deco-m15 pmB" data-kit="pm-hairline15" data-slot="Grp4" data-kit-fit="actual" data-series="premium-minimal">
+          <span class="lbl">@Grp4@</span>
+        </div>
+      </div>
+      <div class="meta"><b>pm-hairline15</b> — 단일 하단 룰 + 좌측 텍스트</div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">PM-C · Memo2 · 15mm</span>
+      <div class="stage">
+        <div class="deco-m15 pmC" data-kit="pm-leftrule" data-slot="Memo2" data-kit-fit="actual" data-series="premium-minimal">
+          <div class="rule"></div>
+          <div class="tx">@Memo2@</div>
+        </div>
+      </div>
+      <div class="meta"><b>pm-leftrule</b> — 얇은 좌측 세로 룰 + 본문</div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">PM-E · Source · 10mm</span>
+      <div class="stage">
+        <div class="deco-m10 pmE" data-kit="pm-baseline" data-slot="Source" data-kit-fit="actual" data-series="premium-minimal">
+          <span class="lbl">@Source@</span>
+        </div>
+      </div>
+      <div class="meta"><b>pm-baseline</b> — 중앙 텍스트 + 풀폭 하단 헤어라인</div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">PM-D · Level · 10mm</span>
+      <div class="stage">
+        <div class="deco-m10 pmD" data-kit="pm-dot-level" data-slot="Level" data-kit-fit="actual" data-series="premium-minimal">
+          <span class="dot"></span><span class="lbl">@Level@</span>
+        </div>
+      </div>
+      <div class="meta"><b>pm-dot-level</b> — 작은 도트 + 페일 베이스라인</div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

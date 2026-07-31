@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>HWPX 데코·배경 요소 — Pastel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --mm: 4px;
+    /* 파스텔 듀얼 + 다크 라인 */
+    --accent:       #f5a3bf;
+    --accent-soft:  #fbd4e5;
+    --line:         #4a4a4a;
+    --paper:        #ffffff;
+    --muted:        #9a9a9a;
+
+    --ui-bg:    #f3efe6;
+    --ui-line:  #2a2a2a;
+    --ui-muted: #6b6b66;
+  }
+
+  body[data-concept="pink"]     { --accent:#f5a3bf; --accent-soft:#fbd4e5; }
+  body[data-concept="mint"]     { --accent:#92cdab; --accent-soft:#d3ecdd; }
+  body[data-concept="lavender"] { --accent:#ad94d8; --accent-soft:#e2d8f3; }
+  body[data-concept="sky"]      { --accent:#93bedb; --accent-soft:#d6e8f4; }
+  body[data-concept="butter"]   { --accent:#e6c97a; --accent-soft:#f9ecc3; }
+  body[data-concept="peach"]    { --accent:#efaf8c; --accent-soft:#fae3d6; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-line);
+    padding: 36px 44px 80px;
+  }
+
+  .topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; border-bottom: 2px dashed var(--ui-line); padding-bottom: 18px; margin-bottom: 28px; }
+  .topbar h1 { font-family: 'Nanum Pen Script', cursive; font-size: 44px; line-height: 1; margin: 0 0 4px; font-weight: 400; }
+  .topbar .sub { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); letter-spacing: 0.02em; }
+  .topbar .sub b { color: var(--ui-line); }
+  .concept-picker { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .concept-picker .lbl { font-family: 'Gaegu', cursive; font-size: 16px; }
+  .swatch { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px 6px 8px; border: 1.5px solid var(--ui-line); background: #fff; border-radius: 999px; font-family: 'Gaegu', cursive; font-size: 14px; cursor: pointer; transition: transform .08s ease; }
+  .swatch:hover { transform: translateY(-1px); }
+  .swatch.active { background: var(--ui-line); color: #fff; }
+  .swatch .dot { width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.25); position:relative; overflow:hidden; }
+  .swatch .dot::after { content:""; position:absolute; inset:0 0 0 50%; }
+  .swatch[data-c="pink"]     .dot { background:#fbd4e5; } .swatch[data-c="pink"]     .dot::after { background:#f5a3bf; }
+  .swatch[data-c="mint"]     .dot { background:#d3ecdd; } .swatch[data-c="mint"]     .dot::after { background:#92cdab; }
+  .swatch[data-c="lavender"] .dot { background:#e2d8f3; } .swatch[data-c="lavender"] .dot::after { background:#ad94d8; }
+  .swatch[data-c="sky"]      .dot { background:#d6e8f4; } .swatch[data-c="sky"]      .dot::after { background:#93bedb; }
+  .swatch[data-c="butter"]   .dot { background:#f9ecc3; } .swatch[data-c="butter"]   .dot::after { background:#e6c97a; }
+  .swatch[data-c="peach"]    .dot { background:#fae3d6; } .swatch[data-c="peach"]    .dot::after { background:#efaf8c; }
+
+  section.size-block { margin-bottom: 56px; }
+  .size-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  .size-head .num { font-family: 'Nanum Pen Script', cursive; font-size: 38px; background: var(--ui-line); color: #fff; width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; line-height: 1; padding-top: 4px; }
+  .size-head .name { font-family: 'Nanum Pen Script', cursive; font-size: 32px; line-height: 1; }
+  .size-head .spec { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--ui-muted); border: 1px dashed var(--ui-line); padding: 4px 8px; background: #fff; }
+  .size-head .spec b { color: var(--ui-line); }
+  .size-head .note { font-family: 'Gaegu', cursive; font-size: 15px; color: var(--ui-muted); }
+
+  .grid { display: grid; gap: 22px 18px; }
+  .grid.small  { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .grid.wide   { grid-template-columns: 1fr; }
+
+  .opt { display: flex; flex-direction: column; gap: 10px; padding: 14px 12px 12px; background: #fff; border: 1.5px solid var(--ui-line); border-radius: 4px; position: relative; }
+  .opt .tag { position: absolute; top: -10px; left: 10px; background: var(--ui-bg); padding: 0 6px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-line); }
+  .opt .stage { display:flex; align-items:center; justify-content:center; min-height: 70px; padding: 8px 4px; }
+  .opt .meta { display: flex; justify-content: space-between; align-items: center; font-family: 'Gaegu', cursive; font-size: 14px; color: var(--ui-muted); border-top: 1px dashed var(--ui-muted); padding-top: 6px; }
+  .opt .meta .id { color: var(--ui-line); font-weight: 700; }
+  .opt button.pick { background: none; border: 1px solid var(--ui-line); font-family: 'Gaegu', cursive; font-size: 13px; padding: 2px 8px; cursor: pointer; border-radius: 3px; }
+  .opt button.pick:hover { background: var(--ui-line); color:#fff; }
+
+  /* ---------- 사이즈 베이스 ---------- */
+  /* 36.5 × 11.5 mm = 146 × 46 px */
+  .deco-s { width: calc(36.5 * var(--mm)); height: calc(11.5 * var(--mm)); position: relative; }
+  .deco-s svg { display: block; width: 100%; height: 100%; }
+  /* 105 × 9/13/18 mm */
+  .deco-w9  { width: calc(105 * var(--mm)); height: calc(9  * var(--mm)); position: relative; }
+  .deco-w13 { width: calc(105 * var(--mm)); height: calc(13 * var(--mm)); position: relative; }
+  .deco-w18 { width: calc(105 * var(--mm)); height: calc(18 * var(--mm)); position: relative; }
+
+  /* 텍스트 슬롯 — 모두 비워두거나 '　　　　　　' 더미 */
+  .smp { font-family: 'Noto Sans KR'; font-weight: 500; font-size: 11px; color: var(--line); letter-spacing: .12em; }
+  .smp-mini { font-family: 'Noto Sans KR'; font-weight: 500; font-size: 9px; color: var(--line); letter-spacing: .1em; }
+  .smp-mid  { font-family: 'Noto Sans KR'; font-weight: 500; font-size: 13px; color: var(--line); letter-spacing: .12em; }
+  .smp-big  { font-family: 'Noto Sans KR'; font-weight: 500; font-size: 15px; color: var(--line); letter-spacing: .12em; }
+
+  /* SVG 색상 헬퍼 — 인라인 SVG 내부에서 var() 사용 */
+  .svg-fill-line   { fill: var(--line); }
+  .svg-fill-paper  { fill: var(--paper); }
+  .svg-stroke-line { stroke: var(--line); }
+  .svg-fill-accent { fill: var(--accent); }
+  .svg-fill-soft   { fill: var(--accent-soft); }
+
+  /* ---------- 세트 라벨 ---------- */
+  .set-label { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-family: 'Nanum Pen Script', cursive; font-size: 24px; margin-top: 8px; color: var(--ui-line); }
+  .set-label::after { content:""; flex:1; height: 0; border-top: 1.5px dashed var(--ui-muted); }
+  .set-label .pill { background: var(--ui-line); color:#fff; font-family: 'Space Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 999px; }
+
+  /* 세트 행 (9/13/18 3사이즈 한 카드) */
+  .set-row { display:flex; flex-direction:column; gap: 12px; }
+  .set-row .row { display:flex; align-items:center; gap:10px; background: var(--paper); border: 1.5px solid var(--ui-line); padding: 12px 10px; border-radius: 4px; }
+  .set-row .row .label { width: 80px; flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ui-muted); }
+  .set-row .row .label b { color: var(--ui-line); display:block; }
+  .set-row .row .stage { flex:1; min-width: 0; display:flex; align-items:center; }
+
+  .footnote { margin-top: 40px; padding-top: 18px; border-top: 1.5px dashed var(--ui-line); font-family: 'Gaegu', cursive; font-size: 14px; color: var(--ui-muted); line-height: 1.6; }
+  .footnote code { font-family: 'Space Mono', monospace; font-size: 12px; background: #fff; border: 1px dashed var(--ui-line); padding: 1px 5px; }
+  .footnote b { color: var(--ui-line); }
+</style>
+<template id="__bundler_thumbnail" data-bg-color="#f3efe6">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- pastel offset ribbon — representative of the deco style -->
+    <rect x="200" y="320" width="800" height="200" rx="24" fill="#fbd4e5"/>
+    <rect x="160" y="280" width="800" height="200" rx="24" fill="#ffffff" stroke="#4a4a4a" stroke-width="6"/>
+    <text x="560" y="400" text-anchor="middle" font-family="sans-serif" font-size="64" font-weight="700" fill="#4a4a4a" letter-spacing="6">PASTEL</text>
+  </svg>
+</template>
+</head>
+<body data-concept="pink">
+
+<div class="topbar">
+  <div>
+    <h1>HWPX 데코·배경 — Pastel</h1>
+    <div class="sub">
+      변환비 <b>1mm = 4px</b> · 사이즈 <b>36.5×11.5mm</b> + <b>105×9/13/18mm</b> · 파스텔 + 오프셋 라인 스타일
+    </div>
+  </div>
+  <div class="concept-picker">
+    <span class="lbl">컬러:</span>
+    <button class="swatch active" data-c="pink"><span class="dot"></span>핑크</button>
+    <button class="swatch" data-c="mint"><span class="dot"></span>민트</button>
+    <button class="swatch" data-c="lavender"><span class="dot"></span>라벤더</button>
+    <button class="swatch" data-c="sky"><span class="dot"></span>스카이</button>
+    <button class="swatch" data-c="butter"><span class="dot"></span>버터</button>
+    <button class="swatch" data-c="peach"><span class="dot"></span>피치</button>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SIZE 1 — 36.5 × 11.5 mm  — 작은 데코 요소 (SVG)
+     레퍼런스 이미지 톤: 파스텔 + 오프셋 라인
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">1</span>
+    <span class="name">데코 요소</span>
+    <span class="spec"><b>36.5 × 11.5 mm</b> · 146 × 46 px</span>
+    <span class="note">— 깃발, 리본, 배지, 말풍선, 하트 등</span>
+  </div>
+
+  <div class="grid small">
+
+    <!-- P-01 : 배너 (하단 V컷) -->
+    <div class="opt">
+      <span class="tag">P-01</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-banner-vcut">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M8,8 L138,8 L138,44 L73,36 L8,44 Z" class="svg-fill-soft"/>
+            <path d="M2,2 L132,2 L132,38 L67,30 L2,38 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:8px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">banner-vcut</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-02 : 깃발 펜넌트 (오른쪽 삼각) -->
+    <div class="opt">
+      <span class="tag">P-02</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-pennant-right">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M8,6 L130,6 L122,26 L130,42 L8,42 Z" class="svg-fill-soft"/>
+            <path d="M2,2 L124,2 L116,22 L124,38 L2,38 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+          </svg>
+          <span style="position:absolute; left:14px; right:30px; top:8px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">pennant-right</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-03 : 리본 (양끝 노치) -->
+    <div class="opt">
+      <span class="tag">P-03</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-ribbon-notch">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M8,8 L12,18 L8,28 L138,28 L134,18 L138,8 Z" class="svg-fill-soft"/>
+            <path d="M2,4 L8,14 L2,24 L132,24 L126,14 L132,4 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+            <path d="M2,4 L8,14 L2,24" class="svg-stroke-line" stroke-width="1.5" fill="none"/>
+            <path d="M132,4 L126,14 L132,24" class="svg-stroke-line" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:6px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">ribbon-notch</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-04 : 둥근 캡슐 (양끝 라운드) -->
+    <div class="opt">
+      <span class="tag">P-04</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-capsule-pill">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <rect x="8" y="8" width="130" height="36" rx="18" class="svg-fill-soft"/>
+            <rect x="2" y="2" width="130" height="36" rx="18" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:11px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">pill</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-05 : 사각 (둥근 모서리) -->
+    <div class="opt">
+      <span class="tag">P-05</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-rounded-rect">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <rect x="8" y="8" width="130" height="36" rx="4" class="svg-fill-soft"/>
+            <rect x="2" y="2" width="130" height="36" rx="4" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:11px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">rect-rounded</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-06 : 사선 스트라이프 프레임 -->
+    <div class="opt">
+      <span class="tag">P-06</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-stripe-frame">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <defs>
+              <pattern id="stripeP06" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                <rect width="3" height="6" class="svg-fill-line"/>
+              </pattern>
+            </defs>
+            <rect x="2" y="2" width="130" height="36" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+            <rect x="2" y="2" width="130" height="6" fill="url(#stripeP06)"/>
+            <rect x="2" y="32" width="130" height="6" fill="url(#stripeP06)"/>
+            <rect x="2" y="8" width="130" height="24" class="svg-fill-soft"/>
+            <rect x="2" y="8" width="130" height="24" class="svg-fill-paper" opacity="0.35"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:13px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">stripe-frame</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-07 : 말풍선 (꼬리 아래) -->
+    <!-- <div class="opt">
+      <span class="tag">P-07</span>
+      <div class="stage">
+        <div class="deco-s">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <rect x="8" y="8" width="120" height="28" rx="14" class="svg-fill-soft"/>
+            <path d="M28,36 L24,42 L36,36 Z" class="svg-fill-soft"/>
+            <rect x="2" y="2" width="120" height="28" rx="14" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+            <path d="M22,30 L18,38 L34,30 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+          <span style="position:absolute; left:0; right:26px; top:10px; text-align:center;" class="smp">SAMPLE</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">speech-bubble</span><button class="pick">선택</button></div>
+    </div> -->
+
+    <!-- P-08 : 태그 (오른쪽 화살표 컷) -->
+    <div class="opt">
+      <span class="tag">P-08</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-tag-arrow">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M8,8 L122,8 L138,26 L122,44 L8,44 Z" class="svg-fill-soft"/>
+            <path d="M2,2 L116,2 L132,20 L116,38 L2,38 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+          </svg>
+          <span style="position:absolute; left:0; right:18px; top:11px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">tag-arrow</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-09 : 브래킷 (양쪽 ⟨ ⟩) -->
+    <!-- <div class="opt">
+      <span class="tag">P-09</span>
+      <div class="stage">
+        <div class="deco-s">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M14,8 L4,20 L14,32" fill="none" class="svg-stroke-line" stroke-width="1.5"/>
+            <path d="M132,8 L142,20 L132,32" fill="none" class="svg-stroke-line" stroke-width="1.5"/>
+            <line x1="18" y1="20" x2="34" y2="20" class="svg-stroke-line" stroke-width="1.5"/>
+            <line x1="112" y1="20" x2="128" y2="20" class="svg-stroke-line" stroke-width="1.5"/>
+            <ellipse cx="73" cy="20" rx="40" ry="14" class="svg-fill-soft" opacity="0.5"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:11px; text-align:center;" class="smp">SAMPLE</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">bracket</span><button class="pick">선택</button></div>
+    </div> -->
+
+    <!-- P-10 : 하트 + 옆 텍스트 -->
+    <div class="opt">
+      <span class="tag">P-10</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-heart-line">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M30,16 C30,10 24,6 18,10 C12,6 6,10 6,16 C6,22 18,32 18,32 C18,32 30,22 30,16 Z" class="svg-fill-soft" transform="translate(4,4)"/>
+            <path d="M30,16 C30,10 24,6 18,10 C12,6 6,10 6,16 C6,22 18,32 18,32 C18,32 30,22 30,16 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+            <line x1="42" y1="20" x2="138" y2="20" class="svg-stroke-line" stroke-width="1" stroke-dasharray="3 3"/>
+          </svg>
+          <span style="position:absolute; left:48px; right:8px; top:13px;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">heart-line</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-11 : 4-point Star (반짝) -->
+    <div class="opt">
+      <span class="tag">P-11</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-sparkle">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <path d="M22,8 L26,18 L36,22 L26,26 L22,36 L18,26 L8,22 L18,18 Z" class="svg-fill-soft" transform="translate(4,4)"/>
+            <path d="M22,8 L26,18 L36,22 L26,26 L22,36 L18,26 L8,22 L18,18 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+            <text x="84" y="26" text-anchor="middle" font-size="10" letter-spacing="1.2" fill="currentColor" font-family="Noto Sans KR" font-weight="500">　　　　　　</text>
+          </svg>
+        </div>
+      </div>
+      <div class="meta"><span class="id">sparkle</span><button class="pick">선택</button></div>
+    </div>
+
+    <!-- P-12 : 도트 점선 프레임 -->
+    <div class="opt">
+      <span class="tag">P-12</span>
+      <div class="stage">
+        <div class="deco-s" data-kit="deco-dotted-frame">
+          <svg viewBox="0 0 146 46" preserveAspectRatio="none">
+            <rect x="8" y="8" width="130" height="36" class="svg-fill-soft"/>
+            <rect x="2" y="2" width="130" height="36" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-dasharray="3 2"/>
+          </svg>
+          <span style="position:absolute; left:0; right:0; top:11px; text-align:center;" class="smp">　　　　　　</span>
+        </div>
+      </div>
+      <div class="meta"><span class="id">dotted-frame</span><button class="pick">선택</button></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SIZE 2-4 SET — 105 × 9/13/18 mm
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">2</span>
+    <span class="name">배경 · 데코 세트</span>
+    <span class="spec"><b>105 × 9 / 13 / 18 mm</b> · 420 × 36 / 52 / 72 px</span>
+    <span class="note">— 한 시각언어를 3가지 높이로</span>
+  </div>
+
+  <div class="grid wide">
+
+    <!-- SET A : 라운드 사각 + 오프셋 -->
+    <div class="set-label"><span class="pill">SET A</span> 라운드 사각 + 파스텔 오프셋</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">A · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-rounded-rect9">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <rect x="10" y="8" width="404" height="28" rx="6" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="28" rx="6" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-rounded-rect13">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <rect x="10" y="12" width="404" height="40" rx="8" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="40" rx="8" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:15px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-rounded-rect18">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <rect x="12" y="16" width="402" height="54" rx="10" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="54" rx="10" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:23px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setA · rounded-offset</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET B : 사선 스트라이프 프레임 -->
+    <div class="set-label"><span class="pill">SET B</span> 사선 스트라이프 프레임</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">B · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-stripe-frame9" data-kit-fit="fill" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <defs><pattern id="stB9" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)"><rect width="4" height="8" class="svg-fill-line"/></pattern></defs>
+                <rect x="10" y="8" width="404" height="28" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="28" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="20" height="28" fill="url(#stB9)"/>
+                <rect x="386" y="2" width="20" height="28" fill="url(#stB9)"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-stripe-frame13" data-kit-fit="fill" data-slot="grp0, grp3, grp4">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <defs><pattern id="stB13" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)"><rect width="4" height="8" class="svg-fill-line"/></pattern></defs>
+                <rect x="10" y="12" width="404" height="40" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="40" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="30" height="40" fill="url(#stB13)"/>
+                <rect x="376" y="2" width="30" height="40" fill="url(#stB13)"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:15px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-stripe-frame18" data-kit-fit="fill" data-slot="grp3, memo2">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <defs><pattern id="stB18" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)"><rect width="5" height="10" class="svg-fill-line"/></pattern></defs>
+                <rect x="12" y="16" width="402" height="54" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="54" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="42" height="54" fill="url(#stB18)"/>
+                <rect x="362" y="2" width="42" height="54" fill="url(#stB18)"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:23px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setB · stripe-corners</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET C : 양쪽 노치 리본 -->
+    <div class="set-label"><span class="pill">SET C</span> 양쪽 노치 리본</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">C · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-ribbon-noch9" data-kit-fit="actual" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <path d="M10,12 L20,22 L10,32 L410,32 L400,22 L410,12 Z" class="svg-fill-soft"/>
+                <path d="M2,4 L14,16 L2,28 L406,28 L394,16 L406,4 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-ribbon-noch13" data-kit-fit="actual" data-slot="grp0">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <path d="M10,16 L24,30 L10,44 L410,44 L396,30 L410,16 Z" class="svg-fill-soft"/>
+                <path d="M2,4 L18,22 L2,40 L406,40 L390,22 L406,4 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:15px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-ribbon-noch18" data-kit-fit="actual" data-slot="memo2">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <path d="M12,22 L30,42 L12,62 L408,62 L390,42 L408,22 Z" class="svg-fill-soft"/>
+                <path d="M2,6 L24,32 L2,58 L406,58 L384,32 L406,6 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:23px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setC · ribbon-notch</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET D : 브래킷 ⟨ ⟩ -->
+    <!-- <div class="set-label"><span class="pill">SET D</span> 브래킷 (양쪽 ⟨ ⟩)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">D · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <ellipse cx="210" cy="20" rx="160" ry="12" class="svg-fill-soft" opacity="0.5"/>
+                <path d="M22,6 L8,18 L22,30" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M398,6 L412,18 L398,30" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <line x1="26" y1="18" x2="80" y2="18" class="svg-stroke-line" stroke-width="1.5"/>
+                <line x1="340" y1="18" x2="394" y2="18" class="svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <ellipse cx="210" cy="26" rx="160" ry="16" class="svg-fill-soft" opacity="0.5"/>
+                <path d="M22,10 L4,26 L22,42" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M398,10 L416,26 L398,42" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <line x1="26" y1="26" x2="90" y2="26" class="svg-stroke-line" stroke-width="1.5"/>
+                <line x1="330" y1="26" x2="394" y2="26" class="svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:18px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <ellipse cx="210" cy="36" rx="170" ry="22" class="svg-fill-soft" opacity="0.5"/>
+                <path d="M22,12 L2,36 L22,60" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M398,12 L418,36 L398,60" fill="none" class="svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+                <line x1="26" y1="36" x2="98" y2="36" class="svg-stroke-line" stroke-width="1.5"/>
+                <line x1="322" y1="36" x2="394" y2="36" class="svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:25px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setD · bracket</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div> -->
+
+    <!-- SET E : 캡슐 (양끝 라운드) -->
+    <div class="set-label"><span class="pill">SET E</span> 캡슐 (라운드 양끝)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">E · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-capsule9" data-kit-fit="fill" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <rect x="10" y="8" width="404" height="28" rx="14" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="28" rx="14" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-capsule13" data-kit-fit="fill" data-slot="grp0, grp3, grp4, title-1">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <rect x="10" y="12" width="404" height="40" rx="20" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="40" rx="20" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:15px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-capsule18" data-kit-fit="fill" data-slot="grp3">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <rect x="12" y="16" width="402" height="54" rx="27" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="54" rx="27" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:23px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setE · capsule</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET F : 말풍선 (좌하단 꼬리) -->
+    <!-- <div class="set-label"><span class="pill">SET F</span> 말풍선 (좌하단 꼬리)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">F · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <rect x="10" y="6" width="404" height="22" rx="11" class="svg-fill-soft"/>
+                <path d="M40,28 L36,34 L48,28 Z" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="22" rx="11" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <path d="M30,22 L26,32 L46,22 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:6px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <rect x="10" y="8" width="404" height="34" rx="17" class="svg-fill-soft"/>
+                <path d="M40,42 L34,50 L52,42 Z" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="34" rx="17" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <path d="M30,36 L24,48 L48,36 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:12px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <rect x="12" y="10" width="402" height="48" rx="24" class="svg-fill-soft"/>
+                <path d="M48,58 L42,68 L62,58 Z" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="48" rx="24" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <path d="M38,50 L30,64 L56,50 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:19px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setF · speech</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div> -->
+
+    <!-- SET G : 한쪽 화살표 컷 (오른쪽) -->
+    <div class="set-label"><span class="pill">SET G</span> 화살표 컷 (오른쪽 향)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">G · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-arrow-cut9" data-kit-fit="fill" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <path d="M10,8 L398,8 L414,22 L398,36 L10,36 Z" class="svg-fill-soft"/>
+                <path d="M2,2 L392,2 L408,16 L392,30 L2,30 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:18px; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-arrow-cut13" data-kit-fit="fill" data-slot="grp0, title-1">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <path d="M10,12 L390,12 L414,32 L390,52 L10,52 Z" class="svg-fill-soft"/>
+                <path d="M2,2 L384,2 L408,22 L384,42 L2,42 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:24px; top:14px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-arrow-cut18" data-kit-fit="fill" data-slot="memo2">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <path d="M12,16 L386,16 L414,44 L386,72 L12,72 Z" class="svg-fill-soft"/>
+                <path d="M2,2 L378,2 L406,30 L378,58 L2,58 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:28px; top:22px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setG · arrow-cut</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET H : 점선 프레임 -->
+    <div class="set-label"><span class="pill">SET H</span> 점선 프레임</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">H · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-dotted-frame9" data-kit-fit="actual" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <rect x="10" y="8" width="404" height="28" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="28" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-dasharray="4 3"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-dotted-frame13" data-kit-fit="actual" data-slot="grp0">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <rect x="10" y="12" width="404" height="40" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="40" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-dasharray="4 3"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:15px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-dotted-frame18" data-kit-fit="actual" data-slot="memo2">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <rect x="12" y="16" width="402" height="54" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="54" class="svg-fill-paper svg-stroke-line" stroke-width="1.5" stroke-dasharray="5 3"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:23px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setH · dotted</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET I : 모서리 컷 (왼쪽 위 / 오른쪽 아래) -->
+    <div class="set-label"><span class="pill">SET I</span> 모서리 컷 (대각)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">I · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-corner-cut9" data-kit-fit="actual" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <path d="M22,8 L414,8 L414,36 L398,36 L10,36 L10,20 Z" class="svg-fill-soft"/>
+                <path d="M14,2 L406,2 L406,30 L390,30 L2,30 L2,14 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:9px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-corner-cut13" data-kit-fit="actual" data-slot="grp0, title-1">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <path d="M30,12 L414,12 L414,52 L390,52 L10,52 L10,26 Z" class="svg-fill-soft"/>
+                <path d="M20,2 L406,2 L406,42 L382,42 L2,42 L2,18 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:14px; text-align:center;" class="smp-mid">　　　　　　</span>
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-corner-cut18" data-kit-fit="actual" data-slot="grp3">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <path d="M36,16 L414,16 L414,72 L382,72 L12,72 L12,36 Z" class="svg-fill-soft"/>
+                <path d="M24,2 L406,2 L406,58 L374,58 L2,58 L2,24 Z" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+              </svg>
+              <span style="position:absolute; left:0; right:0; top:22px; text-align:center;" class="smp-big">　　　　　　</span>
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setI · corner-cut</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+    <!-- SET J : 도트 패턴 채움 -->
+    <div class="set-label"><span class="pill">SET J</span> 도트 패턴 채움</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">J · 9/13/18</span>
+      <div class="set-row">
+        <div class="row"><div class="label"><b>9mm</b>420×36</div>
+          <div class="stage">
+            <div class="deco-w9" data-kit="deco-dot-fill9" data-kit-fit="actual" data-slot="source">
+              <svg viewBox="0 0 420 36" preserveAspectRatio="none">
+                <defs><pattern id="dotJ9" patternUnits="userSpaceOnUse" width="8" height="8"><circle cx="4" cy="4" r="1.2" class="svg-fill-line" opacity="0.5"/></pattern></defs>
+                <rect x="10" y="8" width="404" height="28" rx="6" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="28" rx="6" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="404" height="28" rx="6" fill="url(#dotJ9)"/>
+              </svg>
+              <!-- <span style="position:absolute; left:0; right:0; top:9px; text-align:center; background: var(--paper); display:inline-block;" class="smp-mid">
+                <span style="background: var(--paper); padding: 0 8px;">　　　　　　</span>
+              </span> -->
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>13mm</b>420×52</div>
+          <div class="stage">
+            <div class="deco-w13" data-kit="deco-dot-fill13" data-kit-fit="actual" data-slot="grp0, title-1">
+              <svg viewBox="0 0 420 52" preserveAspectRatio="none">
+                <defs><pattern id="dotJ13" patternUnits="userSpaceOnUse" width="10" height="10"><circle cx="5" cy="5" r="1.4" class="svg-fill-line" opacity="0.5"/></pattern></defs>
+                <rect x="10" y="12" width="404" height="40" rx="8" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="404" height="40" rx="8" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="404" height="40" rx="8" fill="url(#dotJ13)"/>
+              </svg>
+              <!-- <span style="position:absolute; left:0; right:0; top:15px; text-align:center;">
+                <span style="background: var(--paper); padding: 1px 10px;" class="smp-mid"></span>
+              </span> -->
+            </div>
+          </div></div>
+        <div class="row"><div class="label"><b>18mm</b>420×72</div>
+          <div class="stage">
+            <div class="deco-w18" data-kit="deco-dot-fill18" data-kit-fit="fill" data-slot="Memo2">
+              <svg viewBox="0 0 420 72" preserveAspectRatio="none">
+                <defs><pattern id="dotJ18" patternUnits="userSpaceOnUse" width="12" height="12"><circle cx="6" cy="6" r="1.6" class="svg-fill-line" opacity="0.5"/></pattern></defs>
+                <rect x="12" y="16" width="402" height="54" rx="10" class="svg-fill-soft"/>
+                <rect x="2" y="2" width="402" height="54" rx="10" class="svg-fill-paper svg-stroke-line" stroke-width="1.5"/>
+                <rect x="2" y="2" width="402" height="54" rx="10" fill="url(#dotJ18)"/>
+              <!-- </svg>
+              <span style="position:absolute; left:0; right:0; top:22px; text-align:center;">
+                <span style="background: var(--paper); padding: 2px 12px;" class="smp-big">　　　　　　</span>
+              </span> -->
+            </div>
+          </div></div>
+      </div>
+      <div class="meta"><span class="id">setJ · dot-fill</span>
+        <div style="display:flex; gap:8px;"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="footnote">
+  ✏️ <b>Pastel 가이드</b><br/>
+  · 비율 <code>1mm = 4px</code> · 사이즈 1 <code>36.5 × 11.5 mm</code> + 사이즈 2~4 <code>105 × 9 / 13 / 18 mm</code><br/>
+  · <b>오프셋 라인 스타일</b> — 모든 모양은 두 겹 (뒤쪽 파스텔 fill + 살짝 어긋난 앞쪽 화이트 outline)<br/>
+  · 컬러는 <code>--accent</code> (파스텔 주색) + <code>--accent-soft</code> (연한 톤) + <code>--line</code> (다크 라인) + <code>--paper</code> 4개 변수만 참조<br/>
+  · 6가지 파스텔 컨셉 (핑크/민트/라벤더/스카이/버터/피치) 토글로 일괄 변경<br/>
+  · 모든 텍스트는 임시 더미 ("　　　　　　") — HWPX 변환 시 텍스트 영역만 비우거나 변수로 치환
+</div>
+
+<script>
+  document.querySelectorAll('.swatch').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.body.dataset.concept = b.dataset.c;
+    });
+  });
+</script>
+</body>
+</html>

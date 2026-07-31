@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>HWPX 데코·배경 요소 탐색</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Gaegu:wght@400;700&family=Nanum+Pen+Script&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- 변환 상수 ----------
+     1mm = 4px (디스플레이용)
+     HWPX 변환 시: px / 4 = mm
+     -------------------------------- */
+  :root {
+    --mm: 4px;
+
+    /* 컨셉 색상 — 토글로 갈아끼움. 디자인은 항상 var() 만 참조. */
+    --accent:       #2b3a55;
+    --accent-soft:  #c9d3e2;
+    --accent-line:  #2b3a55;
+    --ink:          #1a1a1a;
+    --paper:        #fafaf7;
+    --muted:        #888888;
+
+    /* 와이어프레임 UI 자체 색 (컨셉과 무관) */
+    --ui-bg:    #f3efe6;
+    --ui-line:  #2a2a2a;
+    --ui-muted: #6b6b66;
+  }
+
+  /* 컨셉 프리셋 — body[data-concept] 로 스위치 */
+  body[data-concept="mono"]   { --accent:#222; --accent-soft:#d9d9d9; --accent-line:#222; }
+  body[data-concept="warm"]   { --accent:#a8533a; --accent-soft:#f0d9c6; --accent-line:#7a3a26; }
+  body[data-concept="cool"]   { --accent:#2b3a55; --accent-soft:#c9d3e2; --accent-line:#1f2a3d; }
+  body[data-concept="forest"] { --accent:#2f5d3a; --accent-soft:#cfe0c8; --accent-line:#1f4127; }
+  body[data-concept="vivid"]  { --accent:#c8385a; --accent-soft:#f4cdd6; --accent-line:#8a223c; }
+  body[data-concept="sand"]   { --accent:#7a6a3d; --accent-soft:#ece2c2; --accent-line:#544826; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--ui-bg);
+    color: var(--ui-line);
+    padding: 36px 44px 80px;
+  }
+
+  /* ---------- 상단 헤더 / 컨셉 픽커 ---------- */
+  .topbar {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    border-bottom: 2px dashed var(--ui-line);
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+  }
+  .topbar h1 {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 44px; line-height: 1;
+    margin: 0 0 4px;
+    font-weight: 400;
+  }
+  .topbar .sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: var(--ui-muted);
+    letter-spacing: 0.02em;
+  }
+  .topbar .sub b { color: var(--ui-line); }
+
+  .concept-picker {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .concept-picker .lbl {
+    font-family: 'Gaegu', cursive;
+    font-size: 16px; margin-right: 4px;
+  }
+  .swatch {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px 6px 8px;
+    border: 1.5px solid var(--ui-line);
+    background: #fff;
+    border-radius: 999px;
+    font-family: 'Gaegu', cursive;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .08s ease;
+  }
+  .swatch:hover { transform: translateY(-1px); }
+  .swatch.active {
+    background: var(--ui-line); color: #fff;
+  }
+  .swatch .dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.25);
+  }
+  .swatch[data-c="mono"]   .dot { background:#222; }
+  .swatch[data-c="warm"]   .dot { background:#a8533a; }
+  .swatch[data-c="cool"]   .dot { background:#2b3a55; }
+  .swatch[data-c="forest"] .dot { background:#2f5d3a; }
+  .swatch[data-c="vivid"]  .dot { background:#c8385a; }
+  .swatch[data-c="sand"]   .dot { background:#7a6a3d; }
+
+  /* ---------- 섹션 ---------- */
+  section.size-block {
+    margin-bottom: 56px;
+  }
+  .size-head {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .size-head .num {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 38px;
+    background: var(--ui-line); color: #fff;
+    width: 46px; height: 46px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .size-head .name {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 32px; line-height: 1;
+  }
+  .size-head .spec {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; color: var(--ui-muted);
+    border: 1px dashed var(--ui-line);
+    padding: 4px 8px;
+    background: #fff;
+  }
+  .size-head .spec b { color: var(--ui-line); }
+  .size-head .note {
+    font-family: 'Gaegu', cursive; font-size: 15px; color: var(--ui-muted);
+  }
+
+  /* 옵션 그리드 */
+  .grid {
+    display: grid;
+    gap: 22px 18px;
+  }
+  .grid.small  { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .grid.wide   { grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); }
+
+  .opt {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 14px 12px 12px;
+    background: var(--paper);
+    border: 1.5px solid var(--ui-line);
+    border-radius: 4px;
+    position: relative;
+  }
+  .opt .tag {
+    position: absolute; top: -10px; left: 10px;
+    background: var(--ui-bg);
+    padding: 0 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--ui-line);
+  }
+  .opt .stage {
+    /* 요소 자체는 var(--paper) 배경 위에 놓고 가운데 정렬 */
+    display: flex; align-items: center; justify-content: center;
+    min-height: 60px;
+  }
+  .opt .meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Gaegu', cursive;
+    font-size: 14px;
+    color: var(--ui-muted);
+    border-top: 1px dashed var(--ui-muted);
+    padding-top: 6px;
+  }
+  .opt .meta .id { color: var(--ui-line); font-weight: 700; }
+  .opt button.pick {
+    background: none; border: 1px solid var(--ui-line);
+    font-family: 'Gaegu', cursive; font-size: 13px;
+    padding: 2px 8px; cursor: pointer;
+    border-radius: 3px;
+  }
+  .opt button.pick:hover { background: var(--ui-line); color:#fff; }
+
+  /* ---------- 실제 데코 요소 — 사이즈별 베이스 클래스 ---------- */
+  /* 36.5 × 11.5 mm  →  146 × 46 px  (1mm=4px)
+     HWPX 작성 시: width: 36.5mm; height: 11.5mm; */
+  .deco-s {
+    width: calc(36.5 * var(--mm));
+    height: calc(11.5 * var(--mm));
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 105 × 10 mm  → 420 × 40 px */
+  .deco-m10 { width: calc(105 * var(--mm)); height: calc(10 * var(--mm)); position:relative; overflow:hidden; }
+  /* 105 × 15 mm  → 420 × 60 px */
+  .deco-m15 { width: calc(105 * var(--mm)); height: calc(15 * var(--mm)); position:relative; overflow:hidden; }
+  /* 105 × 20 mm  → 420 × 80 px */
+  .deco-m20 { width: calc(105 * var(--mm)); height: calc(20 * var(--mm)); position:relative; overflow:hidden; }
+
+  /* ============================================================
+     SIZE 1 — 36.5 × 11.5 mm  데코요소 (작은 라벨/태그/넘버 박스 류)
+     ============================================================ */
+
+  /* S-01 : 솔리드 라벨 */
+  .s01 { background: var(--accent); display:flex; align-items:center; justify-content:center; }
+  .s01 b { color:#fff; font-family:'Noto Sans KR'; font-size:14px; letter-spacing:.06em; font-weight:700; }
+
+  /* S-02 : 외곽선 + 모서리 컷 */
+  .s02 {
+    background: var(--paper);
+    border: 1.5px solid var(--accent-line);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .s02 b { color:var(--accent); font-family:'Noto Sans KR'; font-size:13px; font-weight:700; letter-spacing:.08em; }
+
+  /* S-03 : 좌측 컬러바 + 텍스트 영역 */
+  .s03 { background: var(--paper); border:1px solid var(--accent-soft); display:flex; align-items:stretch; }
+  .s03 .bar { width: 18px; background: var(--accent); }
+  .s03 .tx  { flex:1; display:flex; align-items:center; justify-content:center; color:var(--accent); font-family:'Noto Sans KR'; font-size:13px; font-weight:700; }
+
+  /* S-04 : 위·아래 라인 (헤어라인 강조) */
+  .s04 { background:var(--paper); display:flex; align-items:center; justify-content:center; position:relative; }
+  .s04::before, .s04::after { content:""; position:absolute; left:0; right:0; height:2px; background:var(--accent); }
+  .s04::before{ top:0; } .s04::after{ bottom:0; }
+  .s04 .mid { height:1px; background:var(--accent-soft); width:60%; }
+
+  /* S-05 : 도트 그리드 백그라운드 */
+  .s05 {
+    background:
+      radial-gradient(var(--accent) 1.2px, transparent 1.5px) 0 0/8px 8px,
+      var(--paper);
+    border:1px solid var(--accent-line);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .s05 b { background: var(--paper); padding: 2px 8px; color:var(--accent); font-family:'Noto Sans KR'; font-size:12px; font-weight:700; }
+
+  /* S-06 : 사선 스트라이프 */
+  .s06 {
+    background:
+      repeating-linear-gradient(45deg, var(--accent) 0 4px, transparent 4px 10px),
+      var(--accent-soft);
+    border-top: 2px solid var(--accent-line);
+    border-bottom: 2px solid var(--accent-line);
+  }
+
+  /* S-07 : 넘버링 박스 (좌측 인덱스 + 우측 콘텐츠) */
+  .s07 { background:var(--paper); border:1.5px solid var(--accent-line); display:flex; }
+  .s07 .n { width:30%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:14px; font-weight:700; }
+  .s07 .t { flex:1; display:flex; align-items:center; justify-content:center; color:var(--accent); font-family:'Noto Sans KR'; font-size:11px; }
+
+  /* S-08 : 둥근 캡슐 */
+  .s08 { background: var(--accent-soft); border-radius: 999px; display:flex; align-items:center; justify-content:center; }
+  .s08 b { color: var(--accent-line); font-family:'Noto Sans KR'; font-size:13px; font-weight:700; letter-spacing:.05em; }
+
+  /* S-09 : 좌우 화살표 컷 (리본 느낌) */
+  .s09 {
+    background: var(--accent);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .s09 b { color:#fff; font-family:'Noto Sans KR'; font-size:12px; font-weight:700; letter-spacing:.08em; }
+
+  /* ============================================================
+     SIZE 2-4 SET — 105 × (10|15|20) mm  배경/데코 (세트 구성)
+     각 세트는 같은 시각언어(variant)를 3가지 높이로 변주
+     ============================================================ */
+
+  /* ---------- SET A — 솔리드 + 좌측 인덱스 ---------- */
+  .setA { background: var(--accent); display:flex; align-items:stretch; }
+  .setA .idx {
+    background: var(--accent-line); color:#fff;
+    width: 60px; display:flex; align-items:center; justify-content:center;
+    font-family: 'Space Mono', monospace; font-weight:700;
+  }
+  .setA .body {
+    flex:1; display:flex; align-items:center; padding:0 16px; color:#fff;
+    font-family:'Noto Sans KR'; font-weight:700; letter-spacing:.02em;
+  }
+  .deco-m10 .idx { font-size: 14px; } .deco-m10 .body { font-size: 14px; }
+  .deco-m15 .idx { font-size: 18px; } .deco-m15 .body { font-size: 16px; }
+  .deco-m20 .idx { font-size: 22px; } .deco-m20 .body { font-size: 18px; }
+
+  /* ---------- SET B — 외곽 라인 + 좌측 컬러블록 ---------- */
+  .setB { background: var(--paper); border:1.5px solid var(--accent-line); display:flex; }
+  .setB .blk { width: 24px; background: var(--accent); }
+  .setB .body { flex:1; display:flex; align-items:center; padding: 0 14px; color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; }
+  .setB .body small { font-family:'Space Mono',monospace; color: var(--muted); margin-left:auto; font-weight:400; font-size: 11px; }
+
+  /* ---------- SET C — 더블라인 (위·아래 두꺼운 + 가운데 헤어라인) ---------- */
+  .setC { background:var(--paper); position:relative; display:flex; align-items:center; padding: 0 20px; }
+  .setC::before, .setC::after { content:""; position:absolute; left:0; right:0; background:var(--accent); }
+  .setC::before { top:0; height:3px; }
+  .setC::after  { bottom:0; height:1px; }
+  .setC .body { color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; }
+  .setC .dot { width:6px; height:6px; background:var(--accent); border-radius:50%; margin-right:10px; }
+
+  /* ---------- SET D — 그라데이션 솔리드 → 페이드 ---------- */
+  .setD { background: linear-gradient(90deg, var(--accent) 0%, var(--accent) 35%, var(--accent-soft) 100%); display:flex; align-items:center; padding: 0 16px; }
+  .setD .body { color:#fff; font-family:'Noto Sans KR'; font-weight:700; text-shadow: 0 1px 0 rgba(0,0,0,.08); }
+
+  /* ---------- SET E — 사선 스트라이프 사이드 + 솔리드 메인 ---------- */
+  .setE { background: var(--paper); border:1px solid var(--accent-soft); display:flex; align-items:stretch; }
+  .setE .stripe {
+    width: 70px;
+    background:
+      repeating-linear-gradient(45deg, var(--accent) 0 5px, transparent 5px 12px),
+      var(--accent-soft);
+  }
+  .setE .body { flex:1; display:flex; align-items:center; padding: 0 16px; color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; }
+
+  /* ---------- SET F — 도트 그리드 배경 + 좌측 캡션 칩 ---------- */
+  .setF {
+    background:
+      radial-gradient(var(--accent) 1.2px, transparent 1.5px) 0 0/10px 10px,
+      var(--paper);
+    border:1px solid var(--accent-line);
+    display:flex; align-items:center; padding: 0 12px;
+  }
+  .setF .chip {
+    background: var(--accent); color:#fff;
+    padding: 4px 10px; font-family:'Noto Sans KR'; font-weight:700; font-size: 12px;
+    margin-right: 10px;
+  }
+  .setF .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; background:var(--paper); padding: 2px 6px; }
+
+  /* ---------- SET G — 코너 컷 (모서리 잘린 노트) ---------- */
+  .setG {
+    background: var(--accent-soft);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+    border-left: 4px solid var(--accent);
+    display:flex; align-items:center; padding: 0 14px;
+  }
+  .setG .body { color: var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; }
+
+  /* ---------- SET H — 좌측 인덱스 원 + 오픈 라인 ---------- */
+  .setH { background: var(--paper); display:flex; align-items:center; padding: 0 12px; border-bottom: 1.5px solid var(--accent-line); position:relative; }
+  .setH::before {
+    content:""; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width: 22px; height: 22px; border-radius:50%; background:var(--accent);
+  }
+  .setH .body { color:var(--accent-line); font-family:'Noto Sans KR'; font-weight:700; padding-left: 34px; }
+  .deco-m20.setH::before { width:32px; height:32px; }
+  .deco-m20.setH .body { padding-left: 46px; }
+
+  /* sub-text 사이즈에 따라 살짝 다르게 */
+  .body .sub { display:none; }
+  .deco-m15 .body .sub, .deco-m20 .body .sub {
+    display: block; font-weight: 400; font-size: 11px; opacity: .75;
+    margin-top: 2px; font-family: 'Space Mono', monospace;
+  }
+  .deco-m20 .body .sub { font-size: 12px; }
+
+  /* ---------- 푸터 가이드 ---------- */
+  .footnote {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1.5px dashed var(--ui-line);
+    font-family: 'Gaegu', cursive;
+    font-size: 14px;
+    color: var(--ui-muted);
+    line-height: 1.6;
+  }
+  .footnote code {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    background: #fff; border: 1px dashed var(--ui-line); padding: 1px 5px;
+  }
+
+  /* 와이드 그리드에서 wide 옵션 강제 */
+  .wide .opt .stage { justify-content: flex-start; padding: 6px 4px; overflow:auto; }
+
+  /* 셋트 라벨 (set A,B,...) */
+  .set-label {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 24px;
+    margin-top: 8px;
+    color: var(--ui-line);
+  }
+  .set-label::after {
+    content:""; flex:1; height: 0; border-top: 1.5px dashed var(--ui-muted);
+  }
+  .set-label .pill {
+    background: var(--ui-line); color:#fff;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    padding: 2px 8px; border-radius: 999px;
+  }
+
+  /* 한 세트 안에서 3 사이즈를 나란히 보여주기 */
+  .set-row { display:flex; flex-direction:column; gap:10px; }
+  .set-row .row {
+    display:flex; align-items:center; gap:10px;
+    background: var(--paper); border: 1.5px solid var(--ui-line); padding: 10px;
+    border-radius: 4px;
+  }
+  .set-row .row .label {
+    width: 70px; flex-shrink: 0;
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    color: var(--ui-muted);
+  }
+  .set-row .row .label b { color: var(--ui-line); display:block; }
+  .set-row .row .stage { flex:1; }
+  .set-row .actions {
+    display:flex; gap: 8px; justify-content: flex-end;
+  }
+  .set-row .actions button {
+    background: none; border: 1px solid var(--ui-line);
+    font-family: 'Gaegu', cursive; font-size: 13px;
+    padding: 3px 10px; cursor: pointer; border-radius: 3px;
+  }
+  .set-row .actions button:hover { background: var(--ui-line); color:#fff; }
+
+  /* 토스트 */
+  #toast {
+    position: fixed; left: 50%; bottom: 30px; transform: translateX(-50%) translateY(20px);
+    background: var(--ui-line); color: #fff;
+    font-family: 'Gaegu', cursive; font-size: 14px;
+    padding: 8px 16px; border-radius: 999px;
+    opacity: 0; transition: opacity .2s, transform .2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  #toast.show { opacity:1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body data-concept="cool">
+
+<!-- ============== TOP BAR ============== -->
+<div class="topbar">
+  <div>
+    <h1>HWPX 표 안 데코·배경 요소</h1>
+    <div class="sub">
+      변환비 <b>1mm = 4px</b> · 컨셉 컬러는 <b>CSS 변수</b> 기반 ·
+      각 요소는 <b>--accent / --accent-soft / --accent-line / --paper</b> 만 참조
+    </div>
+  </div>
+  <div class="concept-picker">
+    <span class="lbl">컨셉 색상:</span>
+    <button class="swatch" data-c="mono"><span class="dot"></span>모노</button>
+    <button class="swatch" data-c="warm"><span class="dot"></span>웜</button>
+    <button class="swatch active" data-c="cool"><span class="dot"></span>쿨</button>
+    <button class="swatch" data-c="forest"><span class="dot"></span>포레스트</button>
+    <button class="swatch" data-c="vivid"><span class="dot"></span>비비드</button>
+    <button class="swatch" data-c="sand"><span class="dot"></span>샌드</button>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     SIZE 1 — 36.5 × 11.5 mm
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">1</span>
+    <span class="name">데코 요소</span>
+    <span class="spec"><b>36.5 × 11.5 mm</b> · 146 × 46 px</span>
+    <span class="note">— 표 안의 작은 라벨 / 인덱스 / 캡션용</span>
+  </div>
+
+  <div class="grid small">
+
+    <div class="opt">
+      <span class="tag">S-01</span>
+      <div class="stage"><div class="deco-s s01" data-kit="deco-base-solid1" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><b>　　　　　　</b></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-02</span>
+      <div class="stage"><div class="deco-s s02" data-kit="deco-base-line" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><b>　　　　　　</b></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-03</span>
+      <div class="stage"><div class="deco-s s03" data-kit="deco-base-label" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><div class="bar"></div><div class="tx">　　　　　　</div></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-04</span>
+      <div class="stage"><div class="deco-s s04" data-kit="deco-base-double" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><div class="mid">　　　　　　</div></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-05</span>
+      <div class="stage"><div class="deco-s s05" data-kit="deco-base-dot" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><b>　　　　　　</b></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-06</span>
+      <div class="stage"><div class="deco-s s06" data-kit="deco-base-stripe" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S">　　　　　　</div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-07</span>
+      <div class="stage"><div class="deco-s s07" data-kit="deco-base-solid" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><div class="n">　　　</div><div class="t">　　　　　　</div></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-08</span>
+      <div class="stage"><div class="deco-s s08" data-kit="deco-base-round" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><b>　　　　　　</b></div></div>
+    </div>
+
+    <div class="opt">
+      <span class="tag">S-09</span>
+      <div class="stage"><div class="deco-s s09" data-kit="deco-base-ribbon" data-slot="Memo2, Grp1" data-kit-fit="actual" data-series="S"><b>　　　　　　</b></div></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SIZE 2-4 SET — 105 × 10 / 15 / 20 mm
+============================================================ -->
+<section class="size-block">
+  <div class="size-head">
+    <span class="num">2</span>
+    <span class="name">배경 · 데코 세트</span>
+    <span class="spec"><b>105 × 10 / 15 / 20 mm</b> · 420 × 40 / 60 / 80 px</span>
+    <span class="note">— 동일 시각언어를 3가지 높이로 변주. 세트째로 컨셉에 끼워 쓰기 좋게.</span>
+  </div>
+
+  <div class="grid wide">
+
+    <!-- SET A -->
+    <div class="set-label"><span class="pill">SET A</span> 솔리드 + 좌측 인덱스</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">A · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setA" data-kit="sell-solid-index10" data-slot="Grp3" data-kit-fit="actual"><div class="idx">　　</div><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setA" data-kit="sell-solid-index15" data-slot="Grp4" data-kit-fit="actual"><div class="idx">　　</div><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setA" data-kit="sell-solid-index20" data-slot="Grp0" data-kit-fit="actual"><div class="idx">　　</div><div class="body">　　　　　　</div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setA · solid-index</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET B -->
+    <div class="set-label"><span class="pill">SET B</span> 외곽선 + 좌측 컬러블록</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">B · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setB" data-kit="sell-outline-block10" data-slot="Grp3" data-kit-fit="actual"><div class="blk"></div><div class="body">　　　　　　<small>　　</small></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setB" data-kit="sell-outline-block15" data-slot="Memo2" data-kit-fit="actual"><div class="blk"></div><div class="body">　　　　　　<span class="sub"></span><small>　　</small></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setB" data-kit="sell-outline-block20" data-slot="Grp0" data-kit-fit="actual"><div class="blk"></div><div class="body">　　　　　　<span class="sub"></span><small>　　</small></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setB · outline-block</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET C -->
+    <div class="set-label"><span class="pill">SET C</span> 더블 룰 (위 두꺼움 / 아래 헤어라인)</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">C · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setC" data-kit="sell-double-rule10" data-slot="Source" data-kit-fit="actual"><div class="dot"></div><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setC" data-kit="sell-double-rule15" data-slot="Grp0" data-kit-fit="actual"><div class="dot"></div><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setC" data-kit="sell-double-rule20" data-slot="Memo2" data-kit-fit="actual"><div class="dot"></div><div class="body">　　　　　　</div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setC · double-rule</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET D -->
+    <div class="set-label"><span class="pill">SET D</span> 그라데이션 페이드</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">D · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setD" data-kit="sell-gradient-fade10" data-slot="Source" data-kit-fit="actual"><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setD" data-kit="sell-gradient-fade15" data-slot="Grp3" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setD" data-kit="sell-gradient-fade20" data-slot="Grp0" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setD · gradient-fade</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET E -->
+    <div class="set-label"><span class="pill">SET E</span> 사선 스트라이프 사이드</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">E · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setE" data-kit="sell-stripe-side10" data-slot="Source" data-kit-fit="actual"><div class="stripe"></div><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setE" data-kit="sell-stripe-side15" data-slot="Grp3" data-kit-fit="actual"><div class="stripe"></div><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setE" data-kit="sell-stripe-side20" data-slot="Grp0" data-kit-fit="actual"><div class="stripe"></div><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setE · stripe-side</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET F -->
+    <div class="set-label"><span class="pill">SET F</span> 도트 그리드 배경 + 칩</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">F · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setF" data-kit="sell-dot-grid10" data-slot="Source" data-kit-fit="actual"><div class="chip">　　　　　</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setF" data-kit="sell-dot-grid15" data-slot="Grp3" data-kit-fit="actual"><div class="chip">　　</div><div class="body">　　　　　　　　　　　　　　　　　　　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setF" data-kit="sell-dot-grid20" data-slot="Grp0" data-kit-fit="actual"><div class="body">　　　　　　　　　　　　　　　　　　　　　　<span class="sub">　　　　　　　　</span></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setF · dot-grid</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET G -->
+    <div class="set-label"><span class="pill">SET G</span> 코너 컷 노트</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">G · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setG" data-kit="sell-corner-cut10" data-slot="Source" data-kit-fit="actual"><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setG" data-kit="sell-corner-cut15" data-slot="Grp3" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setG" data-kit="sell-corner-cut20" data-slot="Grp0, Memo2" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setG · corner-cut</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+    <!-- SET H -->
+    <div class="set-label"><span class="pill">SET H</span> 인덱스 원 + 오픈 라인</div>
+    <div class="opt" style="grid-column: 1 / -1;">
+      <span class="tag">H · 10/15/20</span>
+      <div class="set-row">
+        <div class="row">
+          <div class="label"><b>10mm</b>420×40</div>
+          <div class="stage"><div class="deco-m10 setH" data-kit="sell-circle-rule10" data-slot="Source" data-kit-fit="actual"><div class="body">　　　　　　</div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>15mm</b>420×60</div>
+          <div class="stage"><div class="deco-m15 setH" data-kit="sell-circle-rule15" data-slot="Grp3" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+        <div class="row">
+          <div class="label"><b>20mm</b>420×80</div>
+          <div class="stage"><div class="deco-m20 setH" data-kit="sell-circle-rule20" data-slot="Grp0" data-kit-fit="actual"><div class="body">　　　　　　<span class="sub">　　　　　　</span></div></div></div>
+        </div>
+      </div>
+      <div class="meta"><span class="id">setH · circle-rule</span>
+        <div class="actions"><button class="pick">세트로 선택</button><button class="pick">랜덤 1개</button></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============== FOOTNOTE ============== -->
+<div class="footnote">
+  ✏️ <b>MVP → HWPX 변환 가이드</b><br/>
+  · 디스플레이 비율 <code>1mm = 4px</code> · HWPX 출력 시 <code>너비/4 = mm</code> 로 그대로 환산<br/>
+  · 모든 요소는 <code>--accent</code>, <code>--accent-soft</code>, <code>--accent-line</code>, <code>--paper</code> 4개 변수만 참조 — 컨셉 컬러팔레트만 갈아끼우면 전체 톤이 일관되게 전환됨<br/>
+  · 데코 요소 ID(<code>solid-label</code>, <code>setA</code> 등)는 MVP에서 옵션 키로 그대로 사용 가능 · <code>랜덤 1개</code> 버튼 자리에 백엔드 랜덤 셀렉터 매핑 예정<br/>
+  · 세트(A–H)는 <b>같은 시각언어</b>를 10·15·20mm 세 높이로 변주 — 표 내 행 높이가 달라도 디자인 일관성 유지
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // 컨셉 스위처
+  document.querySelectorAll('.swatch').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      document.body.dataset.concept = b.dataset.c;
+    });
+  });
+
+  // 픽 버튼 토스트
+  const toast = document.getElementById('toast');
+  let t;
+  document.querySelectorAll('button.pick').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const card = e.target.closest('.opt');
+      const id = card.querySelector('.id')?.textContent || 'item';
+      const label = e.target.textContent.trim();
+      toast.textContent = `[${id}] ${label} ✓`;
+      toast.classList.add('show');
+      clearTimeout(t);
+      t = setTimeout(() => toast.classList.remove('show'), 1400);
+    });
+  });
+</script>
+</body>
+</html>

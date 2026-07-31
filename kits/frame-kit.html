@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Frame Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Caveat:wght@500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:       #1a1916;
+    --ink-2:     #4a4640;
+    --soft:      #8a8378;
+    --line:      #1a1916;
+    --bg:        #fafaf7;
+    --bg-card:   #ffffff;
+    --rule:      #d9d3c5;
+    --accent:    #FF00FF;
+    --accent-2:  #FFFF00;
+    --accent-3:  #00FFFF;
+    --accent-4:  #FF00FF;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Inter", "Noto Sans JP", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 72px 56px 120px;
+  }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+  }
+  .hero h1 {
+    font-family: "Instrument Serif", serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5.2vw, 68px);
+    line-height: 1.0;
+    letter-spacing: -0.015em;
+    margin: 6px 0 0;
+  }
+  .hero h1 em { font-style: italic; color: var(--soft); }
+  .hero p {
+    max-width: 480px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--soft);
+    margin: 0;
+  }
+  .meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  /* SECTION */
+  .row { margin-bottom: 72px; }
+  .row > h2 {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin: 0 0 32px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .row > h2::after {
+    content: ""; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(0,0,0,0.18), transparent);
+  }
+
+  .grid {
+    display: grid;
+    gap: 28px;
+  }
+  .grid-5 { grid-template-columns: repeat(5, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 920px) {
+    .grid-5, .grid-4 { grid-template-columns: repeat(3, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .cell {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 28px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    min-height: 150px;
+    position: relative;
+  }
+  .cell.tall { min-height: 170px; padding-top: 32px; }
+  .cell.wide-content { padding: 28px 24px 14px; }
+  .cell .badge-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .cap {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+    position: absolute;
+    top: 12px; left: 14px;
+  }
+
+  /* ================================================================
+     PRIMITIVES — typography helpers
+     ================================================================ */
+  .t-label {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .t-label.sm { font-size: 9px; letter-spacing: 0.2em; }
+  .t-num {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+    font-feature-settings: "tnum";
+  }
+  .t-num.lg { font-size: 38px; }
+  .t-num.xl { font-size: 56px; }
+  .t-num.outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--ink);
+  }
+
+  /* ================================================================
+     SECTION 01 — NUMBER BADGES
+     ================================================================ */
+
+  /* 01a — Cross marks at corners + label/num stack */
+  .b-cross {
+    position: relative;
+    padding: 14px 18px;
+    text-align: center;
+  }
+  .b-cross::before, .b-cross::after,
+  .b-cross > .x1, .b-cross > .x2 {
+    content: "";
+    position: absolute;
+    width: 10px; height: 10px;
+    background:
+      linear-gradient(var(--ink), var(--ink)) center / 100% 1.5px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) center / 1.5px 100% no-repeat;
+  }
+  .b-cross::before { top: 0; left: 0; }
+  .b-cross::after  { top: 0; right: 0; }
+  .b-cross .x1 { bottom: 0; left: 0; }
+  .b-cross .x2 { bottom: 0; right: 0; }
+  .b-cross .lbl { display:block; }
+
+  /* 01b — L-bracket corners */
+  .b-Lcorners {
+    position: relative;
+    padding: 16px 22px;
+    text-align: center;
+  }
+  .b-Lcorners .c {
+    position: absolute;
+    width: 10px; height: 10px;
+    border: 1.5px solid var(--ink);
+  }
+  .b-Lcorners .c.tl { top:0; left:0; border-right:none; border-bottom:none; }
+  .b-Lcorners .c.tr { top:0; right:0; border-left:none; border-bottom:none; }
+  .b-Lcorners .c.bl { bottom:0; left:0; border-right:none; border-top:none; }
+  .b-Lcorners .c.br { bottom:0; right:0; border-left:none; border-top:none; }
+
+  /* 01c — Circle outline */
+  .b-circle {
+    width: 96px; height: 96px;
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+  }
+
+  /* 01d — Pill */
+  .b-pill {
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .b-pill .div {
+    width: 1px; height: 18px; background: var(--ink); opacity: 0.6;
+  }
+
+  /* 01e — Split box [POINT | 01] */
+  .b-split {
+    border: 1.5px solid var(--ink);
+    display: inline-flex;
+  }
+  .b-split > div { padding: 8px 14px; display:flex; align-items:center; }
+  .b-split > div + div { border-left: 1.5px solid var(--ink); }
+
+  /* 01f — Speech bubble with tail */
+  .b-bubble {
+    position: relative;
+    border: 1.5px solid var(--ink);
+    border-radius: 14px;
+    padding: 10px 18px;
+    text-align: center;
+  }
+  .b-bubble::after {
+    content: "";
+    position: absolute;
+    left: 18px; bottom: -8px;
+    width: 12px; height: 12px;
+    background: var(--bg-card);
+    border-right: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    transform: rotate(45deg);
+  }
+
+  /* 01g — Yellow blob behind */
+  .b-blob {
+    position: relative;
+    padding: 14px 22px;
+    text-align: center;
+  }
+  .b-blob::before {
+    content: "";
+    position: absolute;
+    inset: -2px -8px;
+    background: var(--accent-2);
+    border-radius: 60% 40% 55% 45% / 50% 55% 45% 50%;
+    z-index: -1;
+  }
+
+  /* 01h — Yellow highlight underline */
+  .b-hilite {
+    position: relative;
+    padding: 6px 4px;
+    text-align: center;
+    display: inline-block;
+  }
+  .b-hilite::after {
+    content: "";
+    position: absolute;
+    left: -2px; right: -2px; bottom: 4px;
+    height: 8px;
+    background: var(--accent-2);
+    z-index: -1;
+    transform: skewX(-4deg);
+  }
+
+  /* 01i — Pin / map balloon */
+  .b-pin {
+    position: relative;
+    width: 78px; height: 90px;
+  }
+  .b-pin .body {
+    position: absolute;
+    inset: 0 0 14px 0;
+    border: 1.5px solid var(--ink);
+    border-radius: 12px;
+    background: var(--bg-card);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+  }
+  .b-pin::after {
+    content: "";
+    position: absolute;
+    left: 50%; bottom: 0;
+    width: 14px; height: 18px;
+    background: var(--bg-card);
+    border-left: 1.5px solid var(--ink);
+    border-right: 1.5px solid var(--ink);
+    transform: translateX(-50%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .b-pin .tip {
+    position: absolute;
+    left: 50%; bottom: -1px;
+    transform: translateX(-50%);
+    width: 14px; height: 14px;
+    background: var(--bg-card);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .b-pin svg {
+    position: absolute;
+    left: 50%; bottom: -5px;
+    transform: translateX(-50%);
+    width: 18px; height: 16px;
+  }
+
+  /* 01j — Flag / ribbon */
+  .b-flag {
+    display: inline-block;
+    background: var(--ink);
+    color: #fff;
+    padding: 9px 22px 9px 14px;
+    clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .b-flag .lbl { font-size: 9px; letter-spacing: 0.18em; opacity: 0.7; margin-right: 6px; }
+
+  /* 01k — Calendar */
+  .b-cal {
+    width: 88px;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 8px;
+    background: var(--bg-card);
+  }
+  .b-cal::before, .b-cal::after {
+    content: "";
+    position: absolute;
+    top: -7px; width: 4px; height: 12px;
+    background: var(--ink);
+    border-radius: 2px;
+  }
+  .b-cal::before { left: 18px; }
+  .b-cal::after  { right: 18px; }
+  .b-cal .h {
+    background: var(--ink);
+    color: #fff;
+    padding: 4px 0;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+  }
+  .b-cal .d {
+    padding: 8px 0;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  /* 01l — Hexagon */
+  .b-hex {
+    width: 96px; height: 88px;
+    background: var(--bg-card);
+    clip-path: polygon(25% 5%, 75% 5%, 98% 50%, 75% 95%, 25% 95%, 2% 50%);
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2px;
+  }
+  .b-hex::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--ink);
+    clip-path: polygon(25% 5%, 75% 5%, 98% 50%, 75% 95%, 25% 95%, 2% 50%,
+                      2% 50%, 25% 9%, 75% 9%, 96% 50%, 75% 91%, 25% 91%, 4% 50%);
+    z-index: 1;
+  }
+  .b-hex > * { position: relative; z-index: 2; }
+
+  /* 01m — Outline numeral large */
+  .b-outline {
+    display: flex; align-items: flex-end; gap: 4px;
+  }
+  .b-outline .stack {
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    transform: rotate(-90deg);
+    transform-origin: bottom right;
+    margin-right: -28px;
+  }
+  .b-outline .stack .lbl { font-size: 9px; letter-spacing: 0.22em; }
+
+  /* 01n — Square stack with offset shadow box */
+  .b-stack {
+    position: relative;
+    padding: 14px 18px;
+    border: 1.5px solid var(--ink);
+    background: var(--bg-card);
+  }
+  .b-stack::before {
+    content: "";
+    position: absolute;
+    inset: 4px -6px -6px 4px;
+    background: var(--rule);
+    z-index: -1;
+  }
+
+  /* 01o — Underline + small dots */
+  .b-underline {
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--ink);
+    position: relative;
+  }
+  .b-underline::before, .b-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    width: 5px; height: 5px;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+  .b-underline::before { left: 0; }
+  .b-underline::after  { right: 0; }
+
+  /* 01p — Side line + arrow ▶ */
+  .b-arrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    border-left: 2.5px solid var(--ink);
+    padding: 6px 10px 6px 12px;
+  }
+  .b-arrow .tri {
+    width: 0; height: 0;
+    border-left: 8px solid var(--ink);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+
+  /* 01q — Burst sun rays */
+  .b-burst {
+    position: relative;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .b-burst .ray {
+    position: absolute;
+    width: 2px; height: 8px;
+    background: var(--ink);
+    border-radius: 1px;
+  }
+  .b-burst .ray:nth-child(1){ top:-12px; left:50%; transform: translateX(-50%); }
+  .b-burst .ray:nth-child(2){ top:-8px; left:20%; transform: rotate(-25deg); }
+  .b-burst .ray:nth-child(3){ top:-8px; right:20%; transform: rotate(25deg); }
+  .b-burst .ray:nth-child(4){ top:-4px; left:5%; transform: rotate(-55deg); height: 6px;}
+  .b-burst .ray:nth-child(5){ top:-4px; right:5%; transform: rotate(55deg); height: 6px;}
+
+  /* 01r — Cloud bubble */
+  .b-cloud {
+    position: relative;
+    padding: 12px 24px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    text-align: center;
+    border-radius: 30px 32px 28px 30px / 60% 50% 55% 50%;
+  }
+  .b-cloud::before {
+    content: ""; position: absolute;
+    top: -10px; left: 14px;
+    width: 16px; height: 16px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    border-radius: 50% 50% 50% 30% / 50% 50% 30% 60%;
+  }
+
+  /* 01s — Solid block + outline number */
+  .b-blockout {
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .b-blockout .blk {
+    background: var(--ink); color: #fff;
+    padding: 4px 8px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  /* 01t — Ribbon two-flaps wrap */
+  .b-ribbon {
+    position: relative;
+    padding: 10px 18px;
+    border: 1.5px solid var(--ink);
+    background: var(--bg-card);
+    text-align: center;
+  }
+  .b-ribbon::before, .b-ribbon::after {
+    content: "";
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 14px; height: 18px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 50% 50%);
+  }
+  .b-ribbon::before { left: -16px; clip-path: polygon(0 0, 100% 0, 50% 50%, 100% 100%, 0 100%); }
+  .b-ribbon::after  { right: -16px; clip-path: polygon(0 0, 100% 0, 0 100%, 100% 50%, 100% 50%); }
+
+  /* ================================================================
+     SECTION 02 — HEADING FRAMES (label + box)
+     ================================================================ */
+  .frm-stage {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 28px 24px 22px;
+    position: relative;
+  }
+  .frm-cap {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--soft);
+    text-transform: uppercase;
+    margin-top: 14px;
+    text-align: right;
+  }
+  .frm-body {
+    color: var(--ink-2);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-align: center;
+    padding: 18px 0;
+    line-height: 1.5;
+  }
+  .frm-h {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    background: var(--bg-card);
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+  .frm-h.acc { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 2px; letter-spacing: 0.05em; }
+
+  /* 02a — Inset header (sits in top border) */
+  .frm-inset {
+    border: 1.5px solid var(--ink);
+    position: relative;
+    margin-top: 10px;
+  }
+  .frm-inset .frm-h {
+    position: absolute;
+    top: -10px; left: 24px;
+  }
+  .frm-inset.right .frm-h { left: auto; right: 24px; }
+  .frm-inset.center .frm-h { left: 50%; transform: translateX(-50%); }
+
+  /* 02b — Top tab */
+  .frm-tab {
+    border: 1.5px solid var(--ink);
+    border-top-left-radius: 0;
+    position: relative;
+    margin-top: 28px;
+  }
+  .frm-tab .frm-h {
+    position: absolute;
+    top: -22px; left: -1.5px;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 4px 4px 0 0;
+  }
+  .frm-tab.dark .frm-h { background: var(--ink); color: #fff; }
+
+  /* 02c — Side tab */
+  .frm-side {
+    border: 1.5px solid var(--ink);
+    position: relative;
+    margin-left: 4px;
+  }
+  .frm-side .frm-h {
+    position: absolute;
+    top: 18px; left: -2px;
+    background: var(--ink);
+    color: #fff;
+    padding: 5px 10px;
+    writing-mode: vertical-rl;
+    transform: none;
+    letter-spacing: 0.16em;
+  }
+  .frm-side .frm-body { padding-left: 36px; }
+
+  /* 02d — Top rule + centered label */
+  .frm-rule {
+    position: relative;
+    padding-top: 18px;
+    border-top: 1.5px solid var(--ink);
+  }
+  .frm-rule .frm-h {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+  }
+  .frm-rule.bottom {
+    border-top: none;
+    border-bottom: 1.5px solid var(--ink);
+    padding-top: 0; padding-bottom: 18px;
+  }
+  .frm-rule.bottom .frm-h { top: auto; bottom: -10px; }
+
+  /* 02e — Corner accents (orange L-brackets) */
+  .frm-accents {
+    border: 1px solid var(--ink);
+    position: relative;
+  }
+  .frm-accents::before, .frm-accents::after,
+  .frm-accents .c1, .frm-accents .c2 {
+    content: "";
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--accent);
+  }
+  .frm-accents::before { top:-2px; left:-2px; clip-path: polygon(0 0, 100% 0, 100% 30%, 30% 30%, 30% 100%, 0 100%); }
+  .frm-accents::after  { top:-2px; right:-2px; clip-path: polygon(0 0, 100% 0, 100% 100%, 70% 100%, 70% 30%, 0 30%); }
+  .frm-accents .c1     { bottom:-2px; left:-2px; clip-path: polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%); }
+  .frm-accents .c2     { bottom:-2px; right:-2px; clip-path: polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%); }
+  .frm-accents .frm-h {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+  }
+
+  /* 02f — Bracket frame [ ] */
+  .frm-bracket {
+    position: relative;
+    padding: 6px 28px;
+    text-align: center;
+  }
+  .frm-bracket::before, .frm-bracket::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 12px;
+    border: 1.5px solid var(--ink);
+  }
+  .frm-bracket::before { left: 0; border-right: none; }
+  .frm-bracket::after  { right: 0; border-left: none; }
+
+  /* 02g — Curly bracket frame */
+  .frm-curly {
+    position: relative;
+    padding: 6px 38px;
+    text-align: center;
+  }
+  .frm-curly::before, .frm-curly::after {
+    content: "{";
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    font-family: "Instrument Serif", serif;
+    font-weight: 400;
+    font-size: 80px;
+    line-height: 0.7;
+    color: var(--accent);
+  }
+  .frm-curly::before { left: 0; }
+  .frm-curly::after  { right: 0; content: "}"; }
+
+  /* 02h — Offset shadow frame */
+  .frm-shadow {
+    border: 1.5px solid var(--ink);
+    background: var(--bg-card);
+    position: relative;
+  }
+  .frm-shadow::before {
+    content: "";
+    position: absolute;
+    inset: 6px -6px -6px 6px;
+    border: 1.5px solid var(--ink);
+    z-index: -1;
+  }
+  .frm-shadow .frm-h {
+    position: absolute;
+    top: -10px; left: 24px;
+  }
+
+  /* 02i — Dashed border */
+  .frm-dashed {
+    border: 1.5px dashed var(--ink);
+    position: relative;
+  }
+  .frm-dashed .frm-h {
+    position: absolute;
+    top: -10px; left: 24px;
+  }
+  .frm-dashed.solid-label .frm-h { background: var(--accent); color: #fff; padding: 4px 10px;}
+
+  /* 02j — Slash divider next to label */
+  .frm-slash {
+    border-top: 1.5px solid var(--ink);
+    border-bottom: 1.5px solid var(--ink);
+    padding: 6px 0 4px;
+    position: relative;
+    margin-top: 4px;
+  }
+  .frm-slash .frm-h {
+    display: inline-block;
+    background: var(--bg-card);
+    margin-left: 24px;
+    padding: 0 8px;
+    position: relative; top: -14px;
+  }
+  .frm-slash .slash {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    height: 1.5px;
+    background: var(--ink);
+  }
+
+  /* 02k — Ribbon attached top-left */
+  .frm-ribbon {
+    border: 1.5px solid var(--ink);
+    position: relative;
+    margin-top: 4px;
+  }
+  .frm-ribbon .frm-h {
+    position: absolute;
+    top: -10px; left: 16px;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 14px 6px 10px;
+    clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
+  }
+
+  /* 02l — Double line / minimal */
+  .frm-double {
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+    padding: 6px 0;
+    position: relative;
+  }
+  .frm-double .frm-h {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--bg-card);
+  }
+
+  /* ================================================================
+     SECTION 03 — CONCEPT HEADERS (typography only)
+     ================================================================ */
+  .ch-stage {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 36px 28px 28px;
+    position: relative;
+    min-height: 150px;
+  }
+  .ch-stage .num { position: absolute; top: 12px; left: 14px; }
+  .ch-title {
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.16em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .ch-sub {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    color: var(--soft);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    margin-top: 8px;
+    max-width: 360px;
+  }
+  .ch-jp {
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 11px;
+    color: var(--soft);
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+  .ch-script {
+    font-family: "Caveat", cursive;
+    font-weight: 500;
+    font-size: 32px;
+    color: var(--rule);
+    position: absolute;
+    top: 22px;
+    left: 64px;
+    transform: rotate(-6deg);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .ch-block { display: flex; flex-direction: column; align-items: flex-start; }
+  .ch-block.bord-top   { border-top: 1.5px solid var(--ink); padding-top: 10px; }
+  .ch-block.bord-bot   { border-bottom: 1.5px solid var(--ink); padding-bottom: 10px; align-items:flex-start;}
+  .ch-block.with-bar   { padding-left: 14px; border-left: 3px solid var(--ink); }
+  .ch-block.with-tri   { padding-left: 16px; position: relative; }
+  .ch-block.with-tri::before { content: ""; position: absolute; left: 0; top: 8px;
+    width: 0; height: 0; border-left: 7px solid var(--ink); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+  .midbar { display: inline-block; width: 26px; height: 1.5px; background: var(--ink); margin: 12px 0; }
+  .doubleline { width: 100%; border-bottom: 1.5px solid var(--ink); border-top: 1.5px solid var(--ink); height: 4px; margin-top: 8px; }
+  .slashthru {
+    position: relative;
+    display: inline-flex; align-items: center;
+  }
+  .slashthru::after {
+    content: "";
+    position: absolute;
+    left: 48%; top: -8px; bottom: -8px;
+    width: 1.5px;
+    background: var(--soft);
+    transform: rotate(20deg);
+  }
+
+  /* ================================================================
+     SECTION 04 — SECTION DIVIDERS (big number)
+     ================================================================ */
+  .div-row {
+    display: flex; align-items: center;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .div-row:last-child { border-bottom: 1px solid var(--rule); }
+  .div-num {
+    font-family: "Inter", sans-serif;
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-feature-settings: "tnum";
+  }
+  .div-num.outline {
+    color: transparent;
+    -webkit-text-stroke: 2px currentColor;
+  }
+  .div-titles { display: flex; flex-direction: column; gap: 2px; }
+  .div-title {
+    font-family: "Noto Sans JP", "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .div-sub {
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--soft);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .div-line {
+    flex: 1;
+    height: 1.5px;
+    background: currentColor;
+    margin: 0 18px;
+  }
+  .div-line.thin { height: 1px; }
+  .div-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: currentColor;
+    border-radius: 2px;
+    font-family: "Noto Sans JP", "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  .div-tag span { color: var(--bg-card); }
+  .div-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-right: 12px;
+    white-space: nowrap;
+  }
+  .c-blue  { color: var(--accent-4); }
+  .c-green { color: var(--accent-3); }
+  .c-orange{ color: var(--accent); }
+  .c-red   { color: #d75450; }
+
+  /* ================================================================
+     SECTION 05 — BANNERS / FLAGS
+     ================================================================ */
+  .ban-stage {
+    background: var(--bg-card);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 32px 18px 18px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    min-height: 180px; gap: 18px;
+    position: relative;
+  }
+
+  .ban-ribbon {
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 24px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%, 8% 50%);
+  }
+
+  .ban-flag {
+    background: #fff;
+    border: 1.5px solid var(--ink);
+    padding: 12px 22px 18px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+  }
+
+  .ban-pennant {
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 36px 10px 14px;
+    clip-path: polygon(0 0, 100% 50%, 0 100%, 12% 50%);
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .ban-tag {
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    padding: 10px 18px 10px 26px;
+    position: relative;
+    border-radius: 4px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .ban-tag::before {
+    content: "";
+    position: absolute;
+    left: 10px; top: 50%; transform: translateY(-50%);
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    background: var(--bg-card);
+  }
+
+  .ban-bookmark {
+    width: 70px; height: 90px;
+    background: var(--accent);
+    color: #fff;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    padding-top: 8px;
+  }
+  .ban-bookmark .lbl { font-size: 9px; letter-spacing: 0.18em; opacity: 0.85; }
+  .ban-bookmark .nm  { font-size: 22px; font-weight: 700; }
+
+  .ban-folded {
+    position: relative;
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    padding: 12px 22px;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .ban-folded::after {
+    content: "";
+    position: absolute;
+    top: -1px; right: -1px;
+    width: 18px; height: 18px;
+    background:
+      linear-gradient(225deg, var(--bg) 46%, var(--ink) 47%, var(--ink) 50%, transparent 51%);
+  }
+
+  .ban-notched {
+    background: var(--bg-card);
+    border: 1.5px solid var(--ink);
+    padding: 10px 24px;
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  footer.foot {
+    margin-top: 32px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--soft);
+    display: flex; justify-content: space-between;
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="hero">
+      <div>
+        <div class="meta">SYSTEM — 02 / FRAME &amp; HEADING KIT</div>
+        <h1>Frames, labels,<br/><em>numbered marks.</em></h1>
+      </div>
+      <p>Line-based heading and number ornaments — the kind you find in Japanese editorial design (あしらい). Pure CSS, no images, single accent color throughout.</p>
+    </header>
+
+    <!-- =================================================================
+         01 — NUMBER BADGES
+         ================================================================= -->
+    <section class="row">
+      <h2>01 — Number marks · POINT 01</h2>
+      <div class="grid grid-5">
+
+        <div class="cell"><span class="num">01a</span>
+          <div class="badge-stage"><div class="b-cross" data-kit="num-cross" data-kit-fit="actual">
+            <span class="x1"></span><span class="x2"></span>
+            <div class="t-label lbl">　　　　　　</div>
+            <div class="t-num lg" style="margin-top:4px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01b</span>
+          <div class="badge-stage"><div class="b-Lcorners" data-kit="num-lcorners" data-kit-fit="actual">
+            <span class="c tl"></span><span class="c tr"></span>
+            <span class="c bl"></span><span class="c br"></span>
+            <div class="t-label">　　　　　　</div>
+            <div class="t-num lg" style="margin-top:4px;">　　　　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01c</span>
+          <div class="badge-stage"><div class="b-circle" data-kit="num-circle" data-kit-fit="actual">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01d</span>
+          <div class="badge-stage"><div class="b-pill" data-kit="num-pillDivided" data-kit-fit="actual">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="div"></div>
+            <div class="t-num" style="font-size:18px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01e</span>
+          <div class="badge-stage"><div class="b-split" data-kit="num-splitBox" data-kit-fit="actual">
+            <div><span class="t-label sm">　　　　　　</span></div>
+            <div><span class="t-num" style="font-size:18px;">　　　</span></div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01f</span>
+          <div class="badge-stage"><div class="b-bubble" data-kit="num-bubble" data-kit-fit="actual">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num" style="font-size:22px; margin-top:2px;">　　　</div>
+          </div></div>
+        </div>
+
+        <!-- <div class="cell"><span class="num">01g</span>
+          <div class="badge-stage"><div class="b-blob" data-kit="num-blob" data-kit-fit="actual">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num lg" style="margin-top:4px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01h</span>
+          <div class="badge-stage" data-kit="num-underLine" data-kit-fit="actual" style="flex-direction:column; gap:2px;">
+            <div class="t-label sm" style="align-self:flex-start;">　　　　　　</div>
+            <div class="b-hilite"><span class="t-num xl">　　　</span></div>
+          </div>
+        </div> -->
+
+        <div class="cell"><span class="num">01i</span>
+          <div class="badge-stage">
+            <div class="b-pin">
+            <div class="body" data-kit="num-mapPin" data-kit-fit="actual">
+              <div class="t-label sm">　　　　　　</div>
+              <div class="t-num" style="font-size:22px;">　　　</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01j</span>
+          <div class="badge-stage">
+            <div class="b-flag" data-kit="num-flag" data-kit-fit="actual">
+            <span class="lbl">　　　　　　</span>　　　
+            </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01k</span>
+          <div class="badge-stage" data-kit="num-calendar" data-kit-fit="actual"><div class="b-cal">
+            <div class="h">　　　　　　</div>
+            <div class="d">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01l</span>
+          <div class="badge-stage" data-kit="num-hex" data-kit-fit="actual"><div class="b-hex">
+            <div class="t-label sm" style="color:#fff;">　　　　　　</div>
+            <div class="t-num" style="color:#fff;">　　　</div>
+          </div></div>
+        </div>
+
+        <!-- <div class="cell"><span class="num">01m</span>
+          <div class="badge-stage" data-kit="num-outline" data-kit-fit="actual">
+            <div style="display:flex; align-items:center; gap:6px;">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="t-label sm" style="writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 0.22em;">　　　　　　</div>
+              </div>
+              <div class="t-num" style="font-size:56px; -webkit-text-stroke:2px var(--ink); color:transparent;">　　　</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cell"><span class="num">01n</span>
+          <div class="badge-stage" data-kit="num-offsetBox" data-kit-fit="actual"><div class="b-stack">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num lg" style="margin-top:4px;">　　　</div>
+          </div></div>
+        </div> -->
+
+        <div class="cell"><span class="num">01o</span>
+          <div class="badge-stage" data-kit="num-underline" data-kit-fit="actual"><div class="b-underline">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num" style="margin-top:2px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01p</span>
+          <div class="badge-stage">
+            <div class="b-arrow" data-kit="num-ArrowSide" data-kit-fit="actual">
+            <div class="tri"></div>
+            <div>
+              <div class="t-label sm">　　　　　　</div>
+              <div class="t-num" style="font-size:22px; margin-top:2px;">　　　</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01q</span>
+          <div class="badge-stage" data-kit="num-burst" data-kit-fit="actual"><div class="b-burst">
+            <span class="ray"></span><span class="ray"></span><span class="ray"></span><span class="ray"></span><span class="ray"></span>
+            <div class="t-label sm" style="color:#fff;">　　　　　　</div>
+            <div class="t-num" style="color:#fff; font-size:20px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01r</span>
+          <div class="badge-stage" data-kit="num-cloud" data-kit-fit="actual"><div class="b-cloud">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num" style="font-size:22px;">　　　</div>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01s</span>
+          <div class="badge-stage" data-kit="num-blockout" data-kit-fit="actual"><div class="b-blockout">
+            <span class="blk">　　　　　　</span>
+            <span class="t-num lg">　　　</span>
+          </div></div>
+        </div>
+
+        <div class="cell"><span class="num">01t</span>
+          <div class="badge-stage" data-kit="num-ribbon" data-kit-fit="actual"><div class="b-ribbon">
+            <div class="t-label sm">　　　　　　</div>
+            <div class="t-num" style="font-size:22px;">　　　</div>
+          </div></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================
+         02 — HEADING FRAMES
+         ================================================================= -->
+    <section class="row">
+      <h2>02 — Heading frames · label + box</h2>
+      <div class="grid grid-2">
+
+        <div class="frm-stage">
+          <div class="frm-inset" data-kit="sell-deco-topLeft">
+            <span class="frm-h"> 출처 </span>
+            <div class="frm-body">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-tab" data-kit="sell-deco-tabTop">
+            <span class="frm-h">Depth Check</span>
+            <div class="frm-body">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-rule" data-kit="sell-deco-ruleCentered">
+            <span class="frm-h">　　　　　　</span>
+            <div class="frm-body">　　　　　　<br>　　　　　　<br>　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-accents" data-kit="sell-deco-cornerAccents">
+            <span class="c1"></span><span class="c2"></span>
+            <span class="frm-h">Memo</span>
+            <div class="frm-body" style="padding:24px 0;">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-bracket" data-kit="sell-deco-bracketFrame">
+            <span class="frm-h" style="display:block; padding-top:4px;">　　　　　　</span>
+            <div class="frm-body" style="padding:8px 0 4px;">　　　　　　<br>　　　　　　<br>　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-curly" data-kit="sell-deco-curlyBrackets">
+            <span class="frm-h" style="display:block;">출처</span>
+            <div class="frm-body" style="padding:6px 0 4px;">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-shadow" data-kit="sell-deco-offsetShadow">
+            <span class="frm-h">이 문제의 출처는...</span>
+            <div class="frm-body">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-dashed solid-label" data-kit="sell-deco-DashedAccent">
+            <span class="frm-h acc">선생님의 메모</span>
+            <div class="frm-body">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-ribbon" data-kit="sell-deco-ribbonFlag">
+            <span class="frm-h">Depth Check!</span>
+            <div class="frm-body" style="padding:24px 0 16px;">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="frm-stage">
+          <div class="frm-double" data-kit="sell-deco-doubleRule">
+            <span class="frm-h">　　　　　　</span>
+            <div class="frm-body" style="padding:14px 0 4px;">　　　　　　<br>　　　　　　<br>　　　　　　</div>
+          </div>
+        </div>
+
+        <!-- <div class="frm-stage">
+          <span class="num">02k</span>
+          <div class="frm-tab dark">
+            <span class="frm-h">dummy Text</span>
+            <div class="frm-body">TEXT TEXT TEXT TEXT TEXT TEXT</div>
+          </div>
+          <div class="frm-cap">TOP TAB · INK</div>
+        </div> -->
+
+        <div class="frm-stage">
+          <div class="frm-inset right" data-kit="sell-deco-insetTopRight">
+            <span class="frm-h"> Memo </span>
+            <div class="frm-body">　　　　　　</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================
+         03 — CONCEPT HEADERS
+         ================================================================= -->
+    <section class="row">
+      <h2>03 — Section headings · CONCEPT</h2>
+      <div class="grid grid-2">
+
+        <div class="ch-stage">
+          <div class="ch-block" data-kit="frame-insert-top-leftBase" data-kit-fit="actual">
+            <div class="ch-title">　　　　　　</div>
+            <div class="ch-sub">　　　　　　 　　　　　　  |  　　　　　　 　　　　　　</div>
+            <div class="ch-sub">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="ch-stage">
+          <div class="ch-block bord-top" style="padding-top:14px;" data-kit="frame-insert-topRule" data-kit-fit="actual">
+            <div class="ch-title">　　　　　　</div>
+            <div class="ch-sub">　　　　　　 　　　　　　</div>
+            <div class="ch-sub">　　　　　　 　　　　　　　</div>
+            <div class="ch-sub" style="margin-top:10px;">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="ch-stage">
+          <span class="num">03c</span>
+          <div class="ch-block" data-kit="frame-insert-conceptMidbar">
+            <div class="ch-title">　　　　　　</div>
+            <span class="midbar"></span>
+            <div class="ch-sub">　　　　　　 　　　　　　  |  　　　　　　 　　　　　　　</div>
+          </div>
+        </div>
+
+        <!-- <div class="ch-stage">
+          <span class="num">03d</span>
+          <div class="ch-block" data-kit="frame-insert-conceptTitle">
+            <div class="ch-title">　　　　　　</div>
+            <div class="ch-sub" style="margin-top:14px;">　　　　　　 　　　　　　</div>
+            <div class="ch-sub">　　　　　　</div>
+            <div class="ch-sub">　　　　　　 　　　　　　　</div>
+          </div>
+        </div> -->
+
+        <div class="ch-stage">
+          <span class="num">03e</span>
+          <div class="ch-block" style="flex-direction:row; align-items:baseline; gap:14px;" data-kit="frame-insert-conceptSlash">
+            <div class="ch-title">　　　　　　</div>
+            <span style="color:var(--soft); font-weight:500; font-size:14px;">/</span>
+            <span class="ch-sub" style="margin-top:0;">　　　　　　</span>
+          </div>
+          <div class="ch-sub" style="margin-top:14px;">　　　　　　 　　　　　　</div>
+          <div class="ch-sub">　　　　　　 　　　　　　　</div>
+        </div>
+
+        <!-- <div class="ch-stage">
+          <div class="ch-block" data-kit="frame-insert-conceptDoubleRule">
+            <div class="ch-title" style="border-bottom:2.5px solid var(--ink); padding-bottom:6px;">NEWS</div>
+            <div class="doubleline" style="width:80px;"></div>
+            <div class="ch-sub" style="margin-top:14px;">Double rule beneath alphabet word.</div>
+          </div>
+        </div> -->
+<!-- 
+        <div class="ch-stage">
+          <div class="ch-script">　　　　　　</div>
+          <div class="ch-block" style="margin-top:32px; position:relative;" data-kit="frame-insert-conceptScript">
+            <div class="ch-title">　　　　　　</div>
+            <div class="ch-sub" style="margin-top:10px;">　　　　　　</div>
+            <div class="ch-sub" style="margin-top:14px;">　　　　　　 　　　　　　 　　　　　　　</div>
+          </div>
+        </div> -->
+
+        <div class="ch-stage">
+          <div class="ch-block slashthru" data-kit="frame-insert-conceptSlashThru">
+            <div class="ch-title">　　　　　　</div>
+          </div>
+          <div class="ch-sub" style="margin-top:14px;">　　　　　　 　　　　　　</div>
+          <div class="ch-sub">　　　　　　 　　　　　　　</div>
+          <div class="ch-sub" style="margin-top:14px;">　　　　　　</div>
+        </div>
+
+        <div class="ch-stage">
+          <div class="ch-block with-tri" data-kit="frame-insert-conceptTriangle" >
+            <div class="ch-title" style="font-size:22px;">　　　　　　</div>
+            <div class="ch-sub" style="margin-top:6px;">　　　　　　 　　　　　　</div> 
+            <div class="ch-sub">　　　　　　 　　　　　　　</div>
+            <div class="ch-sub">　　　　　　</div>
+          </div>
+        </div>
+
+        <div class="ch-stage">
+          <span class="num">03j</span>
+          <div class="ch-block with-bar" data-kit="frame-insert-conceptBar">
+            <div class="ch-title" style="font-size:22px;">　　　　　　</div>
+            <div class="ch-sub"> 　　　　　　 　　　　　　　 | 　　　　　　 　　　　　　</div>
+            <div class="ch-sub" style="margin-top:6px;">　　　　　　</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================
+         04 — SECTION DIVIDERS · big number
+         ================================================================= -->
+    <section class="row">
+      <h2>04 — Document section dividers</h2>
+      <div style="background:var(--bg-card); border:1px solid var(--rule); border-radius:12px; padding: 12px 28px;" >
+
+        <div class="div-row c-blue" data-kit="frame-insert-document01" data-kit-fit="actual">
+          <div class="div-num">　　　　　　</div>
+          <div class="div-titles" style="margin-left:14px;">
+            <div class="div-title">　　　　　　</div>
+            <div class="div-sub">　　　　　　</div>
+          </div>
+          <div class="div-line"></div>
+          <div class="div-tag"><span>　　　　　　　</span></div>
+          <div class="div-sub"><span>　　　　　　 | 　　　　　　</span></div>
+        </div>
+
+        <div class="div-row c-green" data-kit="frame-insert-document02" data-kit-fit="actual">
+          <div class="div-tag"><span>　　　　　　　</span></div>
+          <div class="div-line"></div>
+          <div class="div-titles" style="text-align:right; align-items:flex-end; margin-right:14px;">
+            <div class="div-title">　　　　　　</div>
+            <div class="div-sub">　　　　　　 | 　　　　　　
+            </div>
+          </div>
+          <div class="div-num">　　　　　　</div><div class="div-num">　　　　　　</div>
+        </div>
+
+        <div class="div-row c-orange" data-kit="frame-insert-document03"  data-kit-fit="aspect" data-kit-w-mm="80">
+          <div class="div-num outline">　　　　　　</div>
+          <div class="div-titles" style="margin-left:14px;">
+            <div class="div-title">　　　　　　</div>
+            <div class="div-sub">　　　　　　　 　　　　　　</div>
+            <div class="div-sub">　　　　　　</div>
+          </div>
+          <div class="div-line thin"></div>
+          <div class="div-pill">　　　　　　</div>
+        </div>
+
+        <div class="div-row c-red" data-kit="frame-insert-document04" data-kit-fit="aspect" data-kit-w-mm="80">
+          <div class="div-pill">　　　　　　　</div>
+          <div style="font-family:'Inter',sans-serif; font-size:10px; color:var(--soft); letter-spacing:0.18em; text-transform:uppercase;">　　　　　　 · 　　　　　　</div>
+          <div class="div-line"></div>
+          <div class="div-titles" style="text-align:right; align-items:flex-end; margin-right:14px;">
+            <div class="div-title">　　　　　　</div>
+            <div class="div-sub">　　　　　　</div>
+          </div>
+          <div class="div-num">　　　　　　</div>
+        </div>
+
+        <div class="div-row c-green" data-kit="frame-insert-document05" data-kit-fit="aspect" data-kit-w-mm="80">
+          <div class="div-num">　　　　　　</div>
+          <div style="font-family:'Inter', 'Noto Sans JP', sans-serif; font-size:11px; color:var(--ink); letter-spacing:0.06em; font-weight:600; margin-left:10px;">　　　　　　</div>
+          <div class="div-title" style="margin-left:14px; color:currentColor;">　　　　　　</div>
+          <div class="div-line"></div>
+          <div style="display:flex; gap:14px; font-family:'Inter',sans-serif; font-size:10px; color:var(--soft); letter-spacing:0.12em;">
+            <span style="color:currentColor; font-weight:600;">　　　　　　</span>
+            <span>　　　　　　　</span><span>　　　　　　</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================
+         05 — BANNERS / FLAGS
+         ================================================================= -->
+    <section class="row">
+      <h2>05 — Banners &amp; flags</h2>
+      <div class="grid grid-4">
+
+        <div class="ban-stage"><span class="num">05a</span>
+          <div class="badge-stage" data-kit="sell-deco-2ribbon" data-kit-fit="actual"><div class="ban-ribbon">　　　　　　　　</div></div>
+        </div>
+
+        <!-- <div class="ban-stage"><span class="num">05b</span>
+          <div class="badge-stage" data-kit="sell-deco-vCut" ><div class="ban-flag">　　　　　</div></div>
+        </div> -->
+
+        <div class="ban-stage"><span class="num">05c</span>
+          <div class="badge-stage" data-kit="sell-deco-pennant" data-kit-fit="actual"><div class="ban-pennant"></div></div>
+        </div>
+
+        <div class="ban-stage"><span class="num">05d</span>
+          <div class="badge-stage" data-kit="sell-deco-tag" data-kit-fit="actual"><div class="ban-tag">　　　　　　</div></div>
+        </div>
+
+        <div class="ban-stage"><span class="num">05e</span>
+          <div class="badge-stage" data-kit="sell-deco-bookmark" data-kit-fit="actual"><div class="ban-bookmark">
+          </div></div>
+        </div>
+
+        <div class="ban-stage"><span class="num">05f</span>
+          <div class="badge-stage" data-kit="sell-deco-folded" data-kit-fit="actual"><div class="ban-folded">　　　　　　</div></div>
+
+        </div>
+
+        <div class="ban-stage"><span class="num">05h</span>
+          <div class="badge-stage" style="position:relative;" data-kit="sell-deco-split" data-kit-fit="actual">
+            <div style="display:inline-flex; align-items:stretch;">
+              <div style="background:var(--ink); color:#fff; padding: 9px 12px; font: 700 13px Inter; letter-spacing: 0.06em;">　　　　　</div>
+              <div style="background:var(--accent-2); padding: 9px 14px; font: 700 13px Inter; clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%);">　　</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>FRAME-KIT / 02 — CSS ONLY · NO SVG ICONS</span>
+      <span>50 ELEMENTS · 5 CATEGORIES</span>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "accent": "#a070d6",
+      "highlight": "#e8d8f0",
+      "ink": "#1a1916",
+      "bg": "#f3f0e8",
+      "strokeWeight": 1.5,
+      "showAccent": true
+    }/*EDITMODE-END*/;
+
+    function applyTweaks(t) {
+      const r = document.documentElement.style;
+      r.setProperty('--accent', t.showAccent ? t.accent : t.ink);
+      r.setProperty('--accent-2', t.showAccent ? t.highlight : '#e5e1d4');
+      r.setProperty('--ink', t.ink);
+      r.setProperty('--bg', t.bg);
+    }
+
+    function App() {
+      const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      React.useEffect(() => { applyTweaks(t); }, [t]);
+      return (
+        <TweaksPanel title="Tweaks">
+          <TweakSection title="Palette">
+            <TweakColor label="Accent"     value={t.accent}    options={['#FF00FF','#00FFFF','#FF00FF','#d75450','#a070d6','#1a1916']} onChange={v=>setTweak('accent', v)} />
+            <TweakColor label="Highlight"  value={t.highlight} options={['#FFFF00','#c8e6c9','#bbd2f0','#f5c2c0','#e8d8f0','#e5e1d4']} onChange={v=>setTweak('highlight', v)} />
+            <TweakColor label="Ink"        value={t.ink}       options={['#1a1916','#222a3d','#2a2b22','#3d2618']} onChange={v=>setTweak('ink', v)} />
+            <TweakColor label="Background" value={t.bg}        options={['#fafaf7','#f3f0e8','#eef1f0','#ffffff']} onChange={v=>setTweak('bg', v)} />
+            <TweakToggle label="Accent on" value={t.showAccent} onChange={v=>setTweak('showAccent', v)} />
+          </TweakSection>
+        </TweaksPanel>
+      );
+    }
+
+    applyTweaks(TWEAK_DEFAULTS);
+    const mount = document.createElement('div');
+    document.body.appendChild(mount);
+    ReactDOM.createRoot(mount).render(<App/>);
+  </script>
+</body>
+</html>
